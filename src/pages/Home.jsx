@@ -8,7 +8,7 @@ import {
   TrendingUp, Star, Phone, MapPin, Mail, PlayCircle
 } from 'lucide-react'
 import PropertyCard from '../components/PropertyCard'
-import { getFeaturedProperties } from '../data/properties'
+import { getFeaturedProperties, toArabicDigits } from '../data/properties'
 import { teamMembers } from '../data/team'
 
 // ─── DATA ───────────────────────────────────────────────
@@ -46,15 +46,18 @@ const whyUsCheckpoints = [
 // ─── HERO ────────────────────────────────────────────────
 function HeroSection() {
   const ref = useRef(null)
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const isArabic = i18n.language?.startsWith('ar')
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
   const bgY      = useTransform(scrollYProgress, [0, 1], [0, 200])
   const opacity  = useTransform(scrollYProgress, [0, 0.5], [1, 0])
 
+  const localizeDigits = (value) => (isArabic ? toArabicDigits(value) : value)
+
   const heroStats = [
-    { value: t('hero_stat1_val'), label: t('hero_stat1_label') },
-    { value: t('hero_stat2_val'), label: t('hero_stat2_label') },
-    { value: t('hero_stat3_val'), label: t('hero_stat3_label') },
+    { value: localizeDigits(t('hero_stat1_val')), label: t('hero_stat1_label') },
+    { value: localizeDigits(t('hero_stat2_val')), label: t('hero_stat2_label') },
+    { value: localizeDigits(t('hero_stat3_val')), label: t('hero_stat3_label') },
   ]
 
   return (
@@ -97,16 +100,16 @@ function HeroSection() {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.8 }}
               className="flex flex-col sm:flex-row gap-4">
               <Link to="/properties?status=for-sale"
-                className="group inline-flex items-center justify-center space-x-2 px-8 py-4 bg-[#bb9661] text-white font-medium rounded-full hover:bg-[#a88450] transition-all hover:shadow-xl hover:shadow-[#bb9661]/30">
+                className={`group inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#bb9661] text-white font-medium rounded-full hover:bg-[#a88450] transition-all hover:shadow-xl hover:shadow-[#bb9661]/30 ${isArabic ? 'sm:flex-row-reverse' : ''}`}>
                 <Building2 className="w-5 h-5" />
                 <span>{t('hero_btn_sale')}</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className={`w-5 h-5 transition-transform ${isArabic ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`} />
               </Link>
               <Link to="/properties?status=for-rent"
-                className="group inline-flex items-center justify-center space-x-2 px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-medium rounded-full border border-white/20 hover:bg-white/20 transition-all">
+                className={`group inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-medium rounded-full border border-white/20 hover:bg-white/20 transition-all ${isArabic ? 'sm:flex-row-reverse' : ''}`}>
                 <HomeIcon className="w-5 h-5" />
                 <span>{t('hero_btn_rent')}</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className={`w-5 h-5 transition-transform ${isArabic ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`} />
               </Link>
             </motion.div>
 
@@ -175,7 +178,8 @@ function ValuesSection() {
 
 // ─── ABOUT ───────────────────────────────────────────────
 function AboutSection() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const isArabic = i18n.language?.startsWith('ar')
   return (
     <section className="py-24 bg-white overflow-hidden max-w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -191,7 +195,7 @@ function AboutSection() {
                 className="absolute -bottom-8 -right-8 bg-white p-6 rounded-xl shadow-xl border border-gray-100">
                 <div className="flex items-center space-x-4">
                   <div className="w-14 h-14 rounded-full bg-[#bb9661]/10 flex items-center justify-center">
-                    <span className="text-2xl font-bold text-[#bb9661]">21+</span>
+                    <span className="text-2xl font-bold text-[#bb9661]">{isArabic ? toArabicDigits('21+') : '21+'}</span>
                   </div>
                   <div>
                     <div className="text-sm text-gray-500">{t('about_years_label')}</div>
@@ -224,9 +228,9 @@ function AboutSection() {
               ))}
             </div>
             <Link to="/contact"
-              className="group inline-flex items-center space-x-2 px-8 py-4 bg-[#242424] text-white font-medium rounded-full hover:bg-[#bb9661] transition-all">
+              className={`group inline-flex items-center gap-2 px-8 py-4 bg-[#242424] text-white font-medium rounded-full hover:bg-[#bb9661] transition-all ${isArabic ? 'flex-row-reverse' : ''}`}>
               <span>{t('about_cta')}</span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className={`w-5 h-5 transition-transform ${isArabic ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`} />
             </Link>
           </motion.div>
         </div>
@@ -237,7 +241,8 @@ function AboutSection() {
 
 // ─── SERVICES ────────────────────────────────────────────
 function ServicesSection() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const isArabic = i18n.language?.startsWith('ar')
   const srvItems = [
     { icon: Building2, title: t('srv1_title'), description: t('srv1_desc'), link: '/properties' },
     { icon: Shield,    title: t('srv2_title'), description: t('srv2_desc'), link: '/contact' },
@@ -261,9 +266,9 @@ function ServicesSection() {
                 </div>
                 <h3 className="text-xl font-bold text-[#242424] mb-3">{s.title}</h3>
                 <p className="text-gray-600 leading-relaxed mb-6">{s.description}</p>
-                <Link to={s.link} className="inline-flex items-center space-x-2 text-[#bb9661] font-medium group/link">
+                <Link to={s.link} className={`inline-flex items-center gap-2 text-[#bb9661] font-medium group/link ${isArabic ? 'flex-row-reverse' : ''}`}>
                   <span>{t('learn_more')}</span>
-                  <ChevronRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+                  <ChevronRight className={`w-4 h-4 transition-transform ${isArabic ? 'rotate-180 group-hover/link:-translate-x-1' : 'group-hover/link:translate-x-1'}`} />
                 </Link>
               </div>
             </motion.div>
@@ -277,8 +282,9 @@ function ServicesSection() {
 // ─── FEATURED PROPERTIES ─────────────────────────────────
 function FeaturedPropertiesSection() {
   const [filter, setFilter] = useState('all')
-  const { t } = useTranslation()
-  const all = getFeaturedProperties()
+  const { t, i18n } = useTranslation()
+  const isArabic = i18n.language?.startsWith('ar')
+  const all = getFeaturedProperties(i18n.language)
   const filtered = filter === 'all' ? all : all.filter(p => p.status === filter)
 
   return (
@@ -310,9 +316,9 @@ function FeaturedPropertiesSection() {
         </div>
         <div className="text-center mt-12">
           <Link to="/properties"
-            className="group inline-flex items-center space-x-2 px-8 py-4 bg-[#242424] text-white font-medium rounded-full hover:bg-[#bb9661] transition-all">
+            className={`group inline-flex items-center gap-2 px-8 py-4 bg-[#242424] text-white font-medium rounded-full hover:bg-[#bb9661] transition-all ${isArabic ? 'flex-row-reverse' : ''}`}>
             <span>{t('view_all')}</span>
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className={`w-5 h-5 transition-transform ${isArabic ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`} />
           </Link>
         </div>
       </div>
@@ -322,34 +328,69 @@ function FeaturedPropertiesSection() {
 
 // ─── VISION & MISSION (dark) ─────────────────────────────
 function VisionMissionSection() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const isArabic = i18n.language?.startsWith('ar')
+
   return (
     <section className="py-24 bg-[#242424] relative overflow-hidden">
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #bb9661 1px, transparent 0)', backgroundSize: '50px 50px' }} />
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="hidden lg:block absolute top-1/2 left-1/4 right-1/4 h-0.5 bg-gradient-to-r from-transparent via-[#bb9661]/30 to-transparent" />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-            transition={{ duration: 0.8 }} className="text-center lg:text-left">
-            <motion.div whileHover={{ rotate: -10, scale: 1.1 }}
-              className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-[#bb9661]/20 mb-6">
-              <Eye className="w-10 h-10 text-[#bb9661]" />
+        {isArabic ? (
+          <div dir="rtl" className="font-[Noto_Kufi_Arabic] grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+              transition={{ duration: 0.8 }} className="text-center lg:text-right">
+              <motion.div whileHover={{ rotate: -10, scale: 1.1 }}
+                className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-[#bb9661]/20 mb-6">
+                <Eye className="w-10 h-10 text-[#bb9661]" />
+              </motion.div>
+              <h3 className="text-3xl font-bold text-white mb-4">{t('vision_title')}</h3>
+              <div className="h-0.5 mb-6 bg-gradient-to-r from-transparent via-[#bb9661]/35 to-transparent" />
+              <p className="text-gray-400 leading-relaxed text-lg">{t('vision_desc')}</p>
             </motion.div>
-            <h3 className="text-3xl font-bold text-white mb-4">{t('vision_title')}</h3>
-            <p className="text-gray-400 leading-relaxed text-lg">{t('vision_desc')}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }} className="text-center lg:text-right">
-            <motion.div whileHover={{ rotate: 10, scale: 1.1 }}
-              className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-[#bb9661]/20 mb-6">
-              <Target className="w-10 h-10 text-[#bb9661]" />
+            <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }} className="text-center lg:text-right">
+              <motion.div whileHover={{ rotate: 10, scale: 1.1 }}
+                className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-[#bb9661]/20 mb-6">
+                <Target className="w-10 h-10 text-[#bb9661]" />
+              </motion.div>
+              <h3 className="text-3xl font-bold text-white mb-4">{t('mission_title')}</h3>
+              <div className="h-0.5 mb-6 bg-gradient-to-r from-transparent via-[#bb9661]/35 to-transparent" />
+              <p className="text-gray-400 leading-relaxed text-lg">{t('mission_desc')}</p>
             </motion.div>
-            <h3 className="text-3xl font-bold text-white mb-4">{t('mission_title')}</h3>
-            <p className="text-gray-400 leading-relaxed text-lg">{t('mission_desc')}</p>
-          </motion.div>
-        </div>
+          </div>
+        ) : (
+          <div dir="ltr" className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+              transition={{ duration: 0.8 }} className="text-center lg:text-left">
+              <motion.div whileHover={{ rotate: -10, scale: 1.1 }}
+                className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-[#bb9661]/20 mb-6">
+                <Eye className="w-10 h-10 text-[#bb9661]" />
+              </motion.div>
+              <h3 className="text-3xl font-bold text-white mb-4">Vision</h3>
+              <p className="text-gray-400 leading-relaxed text-lg">
+                To be the leading real estate marketing company in the region, recognized
+                by clients and partners as a provider of innovative and reliable real estate
+                services that set the standard for excellence in the industry.
+              </p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }} className="text-center lg:text-left">
+              <motion.div whileHover={{ rotate: 10, scale: 1.1 }}
+                className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-[#bb9661]/20 mb-6">
+                <Target className="w-10 h-10 text-[#bb9661]" />
+              </motion.div>
+              <h3 className="text-3xl font-bold text-white mb-4">Mission</h3>
+              <p className="text-gray-400 leading-relaxed text-lg">
+                To provide comprehensive and distinguished real estate marketing
+                services that meet clients' needs, using the latest technologies and
+                innovative marketing strategies, with a focus on quality and transparency
+                in all transactions.
+              </p>
+            </motion.div>
+          </div>
+        )}
       </div>
     </section>
   )
@@ -394,7 +435,9 @@ function LeadershipSection() {
 
 // ─── STATS (dark) ────────────────────────────────────────
 function StatsSection() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const isArabic = i18n.language?.startsWith('ar')
+  const localizeDigits = (value) => (isArabic ? toArabicDigits(value) : value)
   return (
     <section className="py-24 bg-[#242424] relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-[#bb9661]/5 via-transparent to-[#bb9661]/5" />
@@ -403,9 +446,9 @@ function StatsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
           {[
-            { value: t('stat1_val'), label: t('stat1_label') },
-            { value: t('stat2_val'), label: t('stat2_label') },
-            { value: t('stat3_val'), label: t('stat3_label') },
+            { value: localizeDigits(t('stat1_val')), label: t('stat1_label') },
+            { value: localizeDigits(t('stat2_val')), label: t('stat2_label') },
+            { value: localizeDigits(t('stat3_val')), label: t('stat3_label') },
           ].map((s, i) => (
             <motion.div key={s.label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.2 }} className="text-center">
@@ -421,7 +464,8 @@ function StatsSection() {
 
 // ─── WHY RAYASH ──────────────────────────────────────────
 function WhyRayashSection() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const isArabic = i18n.language?.startsWith('ar')
   return (
     <section className="py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -474,11 +518,11 @@ function WhyRayashSection() {
                 className="absolute -bottom-6 -left-6 bg-white p-6 rounded-xl shadow-xl">
                 <div className="grid grid-cols-2 gap-6">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-[#bb9661]">{t('why_stat1')}</div>
+                    <div className="text-2xl font-bold text-[#bb9661]">{isArabic ? toArabicDigits(t('why_stat1')) : t('why_stat1')}</div>
                     <div className="text-xs text-gray-500">{t('why_stat1_label')}</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-[#bb9661]">{t('why_stat2')}</div>
+                    <div className="text-2xl font-bold text-[#bb9661]">{isArabic ? toArabicDigits(t('why_stat2')) : t('why_stat2')}</div>
                     <div className="text-xs text-gray-500">{t('why_stat2_label')}</div>
                   </div>
                 </div>

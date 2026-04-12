@@ -37,7 +37,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Arabic RTL font */
 [dir="rtl"] body,
 [lang="ar"] body {
-  font-family: 'Noto Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
+  font-family: 'Noto Kufi Arabic', 'Segoe UI', Tahoma, sans-serif;
 }
 
 [dir="rtl"] h1,
@@ -46,7 +46,16 @@ h1, h2, h3, h4, h5, h6 {
 [dir="rtl"] h4,
 [dir="rtl"] h5,
 [dir="rtl"] h6 {
-  font-family: 'Noto Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
+  font-family: 'Noto Kufi Arabic', 'Segoe UI', Tahoma, sans-serif;
+}
+
+[dir="rtl"] .prose {
+  text-align: right;
+}
+
+[dir="rtl"] .prose ul {
+  padding-right: 1.5rem;
+  padding-left: 0;
 }
 
 /* Prose styles for blog content */

@@ -3,11 +3,11 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, SlidersHorizontal, Grid, List, X, MapPin, Bed, Bath, Maximize2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { properties, formatPrice } from '../data/properties'
+import { getLocalizedProperties, formatPrice, formatLocalizedNumber } from '../data/properties'
 import PropertyCard from '../components/PropertyCard'
 
 export default function Properties() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [searchParams, setSearchParams] = useSearchParams()
   const [viewMode, setViewMode] = useState('grid')
   const [showFilters, setShowFilters] = useState(false)
@@ -19,6 +19,8 @@ export default function Properties() {
     maxPrice: '',
     search: '',
   })
+
+  const properties = useMemo(() => getLocalizedProperties(i18n.language), [i18n.language])
 
   const cities = useMemo(() => {
     const set = new Set(properties.map(p => p.location.split(',')[0].trim()))
@@ -193,7 +195,7 @@ export default function Properties() {
       {/* Results Count */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <p className="text-gray-600">
-          {t('showing')} <span className="font-semibold text-[#242424]">{filtered.length}</span> {t('properties_count')}
+          {t('showing')} <span className="font-semibold text-[#242424]">{formatLocalizedNumber(filtered.length, i18n.language)}</span> {t('properties_count')}
         </p>
       </div>
 
@@ -256,11 +258,11 @@ export default function Properties() {
                       </div>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4 text-sm text-gray-600">
-                          {p.bedrooms > 0 && <span className="flex items-center gap-1"><Bed className="w-4 h-4 text-[#bb9661]" />{p.bedrooms}</span>}
-                          {p.bathrooms > 0 && <span className="flex items-center gap-1"><Bath className="w-4 h-4 text-[#bb9661]" />{p.bathrooms}</span>}
-                          <span className="flex items-center gap-1"><Maximize2 className="w-4 h-4 text-[#bb9661]" />{p.area} m²</span>
+                          {p.bedrooms > 0 && <span className="flex items-center gap-1"><Bed className="w-4 h-4 text-[#bb9661]" />{formatLocalizedNumber(p.bedrooms, i18n.language)}</span>}
+                          {p.bathrooms > 0 && <span className="flex items-center gap-1"><Bath className="w-4 h-4 text-[#bb9661]" />{formatLocalizedNumber(p.bathrooms, i18n.language)}</span>}
+                          <span className="flex items-center gap-1"><Maximize2 className="w-4 h-4 text-[#bb9661]" />{formatLocalizedNumber(p.area, i18n.language)} m²</span>
                         </div>
-                        <span className="text-xl font-bold text-[#bb9661]">{formatPrice(p.price, p.status)}</span>
+                        <span className="text-xl font-bold text-[#bb9661]">{formatPrice(p.price, p.status, i18n.language)}</span>
                       </div>
                     </div>
                   </div>

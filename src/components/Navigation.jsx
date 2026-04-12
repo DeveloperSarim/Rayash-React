@@ -1,17 +1,35 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Home, Building2, Compass, FileText, Mail, Phone, Menu, X, Globe } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { toArabicDigits } from '../data/properties'
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
   const { t, i18n } = useTranslation()
 
-  const isArabic = i18n.language === 'ar'
+  const isArabicPath = location.pathname === '/ar' || location.pathname.startsWith('/ar/')
+  const isArabic = i18n.language === 'ar' || isArabicPath
+  const displayPhone = isArabic ? toArabicDigits('920014891') : '920014891'
+
+  const stripArPrefix = (path) => {
+    if (path === '/ar') return '/'
+    if (path.startsWith('/ar/')) return path.replace('/ar', '')
+    return path
+  }
+
+  const localizedPath = (path) => {
+    if (!isArabic) return path
+    if (path === '/') return '/ar'
+    return `/ar${path}`
+  }
+
+  const activePath = stripArPrefix(location.pathname)
 
   const navLinks = [
     { path: '/', label: t('nav_home'), icon: Home },
@@ -21,13 +39,20 @@ export default function Navigation() {
     { path: '/contact', label: t('nav_contact'), icon: Mail },
   ]
 
-  const isHome = location.pathname === '/'
+  const isHome = activePath === '/'
   const isWhite = !isHome || scrolled || mobileOpen
 
   const switchLanguage = (lang) => {
     i18n.changeLanguage(lang)
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
     document.documentElement.lang = lang
+
+    const basePath = stripArPrefix(location.pathname)
+    const nextPath = lang === 'ar'
+      ? (basePath === '/' ? '/ar' : `/ar${basePath}`)
+      : basePath
+
+    navigate(`${nextPath}${location.search}${location.hash}`)
     setLangOpen(false)
   }
 
@@ -62,7 +87,7 @@ export default function Navigation() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-3 flex-shrink-0">
+            <Link to={localizedPath('/')} className="flex items-center gap-3 flex-shrink-0">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 className={`text-2xl font-bold font-serif transition-colors ${
@@ -91,13 +116,13 @@ export default function Navigation() {
                 ) : (
                   <Link
                     key={link.path}
-                    to={link.path}
+                    to={localizedPath(link.path)}
                     className={`relative text-sm font-medium transition-colors hover:text-[#bb9661] ${
                       isWhite ? 'text-[#242424]' : 'text-white'
-                    } ${location.pathname === link.path ? 'text-[#bb9661]' : ''}`}
+                    } ${activePath === link.path ? 'text-[#bb9661]' : ''}`}
                   >
                     {link.label}
-                    {location.pathname === link.path && (
+                    {activePath === link.path && (
                       <motion.div
                         layoutId="navbar-indicator"
                         className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#bb9661]"
@@ -117,7 +142,7 @@ export default function Navigation() {
                 }`}
               >
                 <Phone className="w-4 h-4 text-[#bb9661]" />
-                <span>920014891</span>
+                <span>{displayPhone}</span>
               </a>
 
               {/* Language Switcher */}
@@ -164,7 +189,7 @@ export default function Navigation() {
               </div>
 
               <Link
-                to="/properties"
+                to={localizedPath('/properties')}
                 className="px-6 py-2.5 bg-[#bb9661] text-white text-sm font-medium rounded-full hover:bg-[#a88450] transition-all hover:shadow-lg hover:shadow-[#bb9661]/30"
               >
                 {t('nav_explore')}
@@ -243,9 +268,9 @@ export default function Navigation() {
                         </a>
                       ) : (
                         <Link
-                          to={link.path}
+                          to={localizedPath(link.path)}
                           className={`flex items-center gap-3 p-4 rounded-xl transition-all ${
-                            location.pathname === link.path
+                            activePath === link.path
                               ? 'bg-[#bb9661]/10 text-[#bb9661]'
                               : 'text-[#242424] hover:bg-gray-100'
                           }`}
@@ -289,7 +314,7 @@ export default function Navigation() {
                     className="flex items-center justify-center gap-2 w-full p-4 bg-[#bb9661] text-white rounded-xl font-medium"
                   >
                     <Phone className="w-5 h-5" />
-                    <span>920014891</span>
+                    <span>{displayPhone}</span>
                   </a>
                 </div>
               </div>

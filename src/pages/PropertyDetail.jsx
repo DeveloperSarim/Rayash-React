@@ -2,13 +2,13 @@ import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { MapPin, Bed, Bath, Maximize2, CheckCircle, ArrowLeft, Phone, Mail, Share2, Facebook, Linkedin, MessageCircle, Copy, Check } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { getPropertyById, properties, formatPrice } from '../data/properties'
+import { getPropertyById, getLocalizedProperties, formatPrice, formatLocalizedNumber } from '../data/properties'
 import PropertyCard from '../components/PropertyCard'
 
 export default function PropertyDetail() {
   const { id } = useParams()
-  const { t } = useTranslation()
-  const property = getPropertyById(id)
+  const { t, i18n } = useTranslation()
+  const property = getPropertyById(id, i18n.language)
   const [showShareOptions, setShowShareOptions] = useState(false)
   const [copied, setCopied] = useState(false)
 
@@ -73,7 +73,7 @@ export default function PropertyDetail() {
     )
   }
 
-  const related = properties.filter((p) => p.id !== property.id && p.type === property.type).slice(0, 3)
+  const related = getLocalizedProperties(i18n.language).filter((p) => p.id !== property.id && p.type === property.type).slice(0, 3)
   // wrap each related card in a Link
 
   return (
@@ -126,7 +126,7 @@ export default function PropertyDetail() {
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-3xl font-bold text-[#bb9661]">{formatPrice(property.price, property.status)}</div>
+                <div className="text-3xl font-bold text-[#bb9661]">{formatPrice(property.price, property.status, i18n.language)}</div>
                 <div className="text-gray-400 text-sm">{t('code_label')}: {property.code}</div>
               </div>
             </div>
@@ -136,21 +136,21 @@ export default function PropertyDetail() {
               {property.bedrooms > 0 && (
                 <div className="text-center">
                   <Bed size={24} className="text-gold mx-auto mb-2" />
-                  <div className="font-bold text-dark text-xl">{property.bedrooms}</div>
+                  <div className="font-bold text-dark text-xl">{formatLocalizedNumber(property.bedrooms, i18n.language)}</div>
                   <div className="text-gray-500 text-sm">{t('bedrooms')}</div>
                 </div>
               )}
               {property.bathrooms > 0 && (
                 <div className="text-center">
                   <Bath size={24} className="text-gold mx-auto mb-2" />
-                  <div className="font-bold text-dark text-xl">{property.bathrooms}</div>
+                  <div className="font-bold text-dark text-xl">{formatLocalizedNumber(property.bathrooms, i18n.language)}</div>
                   <div className="text-gray-500 text-sm">{t('bathrooms')}</div>
                 </div>
               )}
               {property.area > 0 && (
                 <div className="text-center">
                   <Maximize2 size={24} className="text-gold mx-auto mb-2" />
-                  <div className="font-bold text-dark text-xl">{property.area}</div>
+                  <div className="font-bold text-dark text-xl">{formatLocalizedNumber(property.area, i18n.language)}</div>
                   <div className="text-gray-500 text-sm">{t('area_label')}</div>
                 </div>
               )}

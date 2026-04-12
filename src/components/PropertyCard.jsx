@@ -1,9 +1,9 @@
 import { MapPin, Bed, Bath, Maximize2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { formatPrice } from '../data/properties'
+import { formatPrice, formatLocalizedNumber } from '../data/properties'
 
 export default function PropertyCard({ property: p }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const getTypeLabel = (type) => {
     if (type === 'villa') return t('type_villa')
@@ -34,7 +34,7 @@ export default function PropertyCard({ property: p }) {
         {/* Price badge */}
         <div className="absolute bottom-4 left-4">
           <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-lg">
-            <span className="text-lg font-bold text-[#bb9661]">{formatPrice(p.price, p.status)}</span>
+            <span className="text-lg font-bold text-[#bb9661]">{formatPrice(p.price, p.status, i18n.language)}</span>
           </div>
         </div>
       </div>
@@ -52,18 +52,18 @@ export default function PropertyCard({ property: p }) {
           {p.bedrooms > 0 && (
             <div className="flex items-center">
               <Bed className="w-4 h-4 mr-1 text-[#bb9661]" />
-              <span>{p.bedrooms}</span>
+              <span>{formatLocalizedNumber(p.bedrooms, i18n.language)}</span>
             </div>
           )}
           {p.bathrooms > 0 && (
             <div className="flex items-center">
               <Bath className="w-4 h-4 mr-1 text-[#bb9661]" />
-              <span>{p.bathrooms}</span>
+              <span>{formatLocalizedNumber(p.bathrooms, i18n.language)}</span>
             </div>
           )}
           <div className="flex items-center">
             <Maximize2 className="w-4 h-4 mr-1 text-[#bb9661]" />
-            <span>{p.area} m²</span>
+            <span>{formatLocalizedNumber(p.area, i18n.language)} m²</span>
           </div>
         </div>
       </div>

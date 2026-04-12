@@ -129,10 +129,110 @@ export const properties = [
   },
 ]
 
-export const formatPrice = (price, status) => {
-  if (status === 'for-rent') return `SAR ${price.toLocaleString()}/year`
-  return `SAR ${(price / 1e6).toFixed(1)}M`
+const ARABIC_DIGITS = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩']
+
+const autoTranslationMap = [
+  ['Luxury Villa', 'فيلا فاخرة'],
+  ['Apartments for Rent', 'شقق للإيجار'],
+  ['Elegant Apartment', 'شقة أنيقة'],
+  ['Residential Complex', 'مجمع سكني'],
+  ['Premium Land Plot', 'أرض مميزة'],
+  ['Prime Location', 'موقع مميز'],
+  ['Traditional Style Villa', 'فيلا بطابع تقليدي'],
+  ['Modern Touches', 'بلمسات عصرية'],
+  ['Modern Duplex Apartment', 'شقة دوبلكس حديثة'],
+  ['Beachfront Villa', 'فيلا على الواجهة البحرية'],
+  ['Infinity Pool', 'مسبح إنفينيتي'],
+  ['Commercial Office Space', 'مكتب تجاري'],
+  ['Business District', 'الحي التجاري'],
+  ['for Rent', 'للإيجار'],
+  ['for Sale', 'للبيع'],
+  ['North Jeddah', 'شمال جدة'],
+  ['Jeddah', 'جدة'],
+  ['Saudi Arabia', 'المملكة العربية السعودية'],
+  ['Al Shati', 'الشاطئ'],
+  ['Al Lulu District', 'حي اللؤلؤ'],
+  ['Obhur', 'أبحر'],
+  ['Private Pool', 'مسبح خاص'],
+  ['Garden', 'حديقة'],
+  ['Smart Home System', 'نظام منزل ذكي'],
+  ['Security System', 'نظام أمني'],
+  ['Central AC', 'تكييف مركزي'],
+  ['Parking', 'مواقف سيارات'],
+  ['Furnished', 'مفروشة'],
+  ['Gym', 'نادي رياضي'],
+  ['Swimming Pool', 'مسبح'],
+  ['24/7 Security', 'أمن على مدار الساعة'],
+  ['City View', 'إطلالة على المدينة'],
+  ['Modern Kitchen', 'مطبخ حديث'],
+  ['Balcony', 'شرفة'],
+  ['Corner Plot', 'أرض زاوية'],
+  ['Ready for Construction', 'جاهزة للبناء'],
+  ['Courtyard', 'فناء داخلي'],
+  ['Fountain', 'نافورة'],
+  ['Traditional Design', 'تصميم تراثي'],
+  ['Modern Amenities', 'مرافق حديثة'],
+  ['Duplex', 'دوبلكس'],
+  ['Underground Parking', 'مواقف تحت الأرض'],
+  ['Modern Design', 'تصميم حديث'],
+  ['Beach Access', 'وصول مباشر للشاطئ'],
+  ['Sea View', 'إطلالة بحرية'],
+  ['Private Garden', 'حديقة خاصة'],
+  ['Security', 'أمن'],
+]
+
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+export const toArabicDigits = (input) => String(input).replace(/\d/g, (d) => ARABIC_DIGITS[Number(d)])
+
+export const autoTranslateToArabic = (text) => {
+  if (!text || typeof text !== 'string') return text
+
+  let translated = text
+  for (const [english, arabic] of autoTranslationMap) {
+    translated = translated.replace(new RegExp(escapeRegExp(english), 'gi'), arabic)
+  }
+
+  return toArabicDigits(translated)
 }
 
-export const getFeaturedProperties = () => properties.filter(p => p.featured)
-export const getPropertyById = (id) => properties.find(p => p.id === String(id))
+export const formatLocalizedNumber = (value, lang = 'en', options = {}) => {
+  const locale = lang === 'ar' ? 'ar-SA-u-nu-arab' : 'en-US'
+  return new Intl.NumberFormat(locale, options).format(value)
+}
+
+export const formatPrice = (price, status, lang = 'en') => {
+  const isArabic = lang === 'ar'
+  const currency = isArabic ? 'ر.س' : 'SAR'
+
+  if (status === 'for-rent') {
+    const yearly = isArabic ? ' / سنوياً' : '/year'
+    return `${currency} ${formatLocalizedNumber(price, lang)}${yearly}`
+  }
+
+  const millions = price / 1e6
+  const formattedMillions = formatLocalizedNumber(millions, lang, { minimumFractionDigits: 1, maximumFractionDigits: 1 })
+  return isArabic ? `${currency} ${formattedMillions} مليون` : `${currency} ${formattedMillions}M`
+}
+
+const localizeProperty = (property, lang = 'en') => {
+  if (lang !== 'ar') return property
+
+  return {
+    ...property,
+    code: toArabicDigits(property.code),
+    title: autoTranslateToArabic(property.title),
+    location: autoTranslateToArabic(property.location),
+    description: autoTranslateToArabic(property.description),
+    features: property.features.map((item) => autoTranslateToArabic(item)),
+  }
+}
+
+export const getLocalizedProperties = (lang = 'en') => properties.map((p) => localizeProperty(p, lang))
+
+export const getFeaturedProperties = (lang = 'en') => getLocalizedProperties(lang).filter((p) => p.featured)
+
+export const getPropertyById = (id, lang = 'en') => {
+  const source = properties.find((p) => p.id === String(id))
+  return source ? localizeProperty(source, lang) : undefined
+}

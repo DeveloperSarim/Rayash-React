@@ -258,11 +258,11 @@ const resources = {
       hero_desc: 'نبني مستقبلك العقاري بثقة وتميز، ونقدم حلولاً عقارية متكاملة تجمع بين الخبرة المحلية ورؤية المستقبل.',
       hero_btn_sale: 'عقارات للبيع',
       hero_btn_rent: 'عقارات للإيجار',
-      hero_stat1_val: '+3000',
+      hero_stat1_val: '3000+',
       hero_stat1_label: 'عميل راضٍ',
-      hero_stat2_val: '1.5B',
+      hero_stat2_val: '1.5',
       hero_stat2_label: 'ريال في الصفقات',
-      hero_stat3_val: '+21',
+      hero_stat3_val: '21+',
       hero_stat3_label: 'سنة خبرة',
 
       // Values
@@ -320,11 +320,11 @@ const resources = {
       leadership_desc: 'لدينا فريق قيادي يمتلك خبرة واسعة في مجال العقارات والتسويق، ملتزم بتطوير وتقديم أفضل الخدمات للعملاء والشركاء.',
 
       // Stats
-      stat1_val: '+3000',
+      stat1_val: '3000+',
       stat1_label: 'عميل راضٍ',
-      stat2_val: '1.5B',
+      stat2_val: '1.5',
       stat2_label: 'ريال في الصفقات',
-      stat3_val: '+21',
+      stat3_val: '21+',
       stat3_label: 'سنة خبرة',
 
       // Why Rayash
@@ -337,7 +337,7 @@ const resources = {
       why2_desc: 'نحرص على بناء علاقات طويلة الأمد مع عملائنا من خلال تقديم خدمات شفافة وموثوقة.',
       why_stat1: '98%',
       why_stat1_label: 'رضا العملاء',
-      why_stat2: '+500',
+      why_stat2: '500+',
       why_stat2_label: 'عقار تم بيعه',
 
       // Contact Section (homepage)
