@@ -78,27 +78,40 @@ export default function Properties() {
       {/* Sticky Filter Bar */}
       <div className="sticky top-20 z-30 bg-white shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+          {/* Search Row */}
+          <div className="mb-4">
             {/* Search */}
-            <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <div className="relative w-full">
+              <Search className={`absolute top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400 pointer-events-none ${i18n.language?.startsWith('ar') ? 'right-5' : 'left-5'}`} />
               <input
                 type="text"
                 placeholder={t('search_ph')}
                 value={filters.search}
                 onChange={e => update('search', e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 outline-none transition-all"
+                className={`w-full py-3 rounded-2xl border-2 border-gray-200 bg-white hover:border-[#bb9661]/50 focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 outline-none transition-all font-medium text-base text-gray-900 placeholder-gray-500 ${i18n.language?.startsWith('ar') ? 'pr-16 pl-4' : 'pl-16 pr-4'}`}
+                style={{ color: '#1f2937', caretColor: '#bb9661' }}
               />
+              {filters.search && (
+                <button
+                  onClick={() => update('search', '')}
+                  className={`absolute top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-gray-600 transition-colors ${i18n.language?.startsWith('ar') ? 'left-5' : 'right-5'}`}
+                  title="Clear search"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              )}
             </div>
+          </div>
 
-            <div className="flex items-center justify-between gap-2 w-full">
+          {/* Filters Row */}
+          <div className="flex flex-col lg:flex-row lg:items-center gap-3">
               {/* Left: filters */}
               <div className="flex items-center gap-2 flex-wrap">
                 {/* Status */}
                 <select
                   value={filters.status}
                   onChange={e => update('status', e.target.value)}
-                  className="px-3 py-2.5 rounded-xl border border-gray-200 focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 outline-none transition-all bg-white text-sm"
+                  className="px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 outline-none transition-all bg-white text-sm hover:border-[#bb9661] font-medium"
                 >
                   <option value="all">{t('all_status')}</option>
                   <option value="for-sale">{t('for_sale')}</option>
@@ -109,7 +122,7 @@ export default function Properties() {
                 <select
                   value={filters.type}
                   onChange={e => update('type', e.target.value)}
-                  className="px-3 py-2.5 rounded-xl border border-gray-200 focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 outline-none transition-all bg-white text-sm"
+                  className="px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 outline-none transition-all bg-white text-sm hover:border-[#bb9661] font-medium"
                 >
                   <option value="all">{t('all_types')}</option>
                   <option value="villa">{t('type_villa')}</option>
@@ -121,8 +134,8 @@ export default function Properties() {
                 {/* Advanced filters toggle */}
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className={`flex items-center space-x-1.5 px-3 py-2.5 rounded-xl border transition-all text-sm ${
-                    showFilters ? 'bg-[#bb9661] text-white border-[#bb9661]' : 'border-gray-200 hover:border-[#bb9661] text-gray-700'
+                  className={`flex items-center space-x-1.5 px-4 py-2.5 rounded-xl border font-medium transition-all text-sm ${
+                    showFilters ? 'bg-[#bb9661] text-white border-[#bb9661]' : 'border-gray-200 hover:border-[#bb9661] text-gray-700 hover:text-[#bb9661]'
                   }`}
                 >
                   <SlidersHorizontal className="w-4 h-4" />
@@ -131,22 +144,24 @@ export default function Properties() {
               </div>
 
               {/* Right: View toggle — always stays on same row */}
-              <div className="flex-shrink-0 flex items-center border border-gray-200 rounded-xl overflow-hidden">
+              <div className="flex-shrink-0 flex items-center gap-2 border border-gray-200 rounded-xl overflow-hidden bg-white ms-auto">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-2.5 ${viewMode === 'grid' ? 'bg-[#bb9661] text-white' : 'hover:bg-gray-100 text-gray-600'}`}
+                  className={`p-3 transition-all font-medium ${viewMode === 'grid' ? 'bg-[#bb9661] text-white' : 'hover:bg-gray-100 text-gray-600'}`}
+                  title="Grid view"
                 >
                   <Grid className="w-4 h-4" />
                 </button>
+                <div className="w-px h-6 bg-gray-200" />
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-2.5 ${viewMode === 'list' ? 'bg-[#bb9661] text-white' : 'hover:bg-gray-100 text-gray-600'}`}
+                  className={`p-3 transition-all font-medium ${viewMode === 'list' ? 'bg-[#bb9661] text-white' : 'hover:bg-gray-100 text-gray-600'}`}
+                  title="List view"
                 >
                   <List className="w-4 h-4" />
                 </button>
               </div>
             </div>
-          </div>
 
           {/* Advanced Filters */}
           <AnimatePresence>
@@ -161,7 +176,7 @@ export default function Properties() {
                   <select
                     value={filters.city}
                     onChange={e => update('city', e.target.value)}
-                    className="px-4 py-3 rounded-xl border border-gray-200 focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 outline-none transition-all bg-white text-sm"
+                    className="px-4 py-3 rounded-xl border border-gray-200 focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 outline-none transition-all bg-white text-sm hover:border-[#bb9661] font-medium"
                   >
                     <option value="all">{t('all_cities')}</option>
                     {cities.map(c => <option key={c} value={c}>{c}</option>)}
@@ -170,17 +185,17 @@ export default function Properties() {
                     type="number" placeholder={t('min_price')}
                     value={filters.minPrice}
                     onChange={e => update('minPrice', e.target.value)}
-                    className="px-4 py-3 rounded-xl border border-gray-200 focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 outline-none transition-all text-sm"
+                    className="px-4 py-3 rounded-xl border border-gray-200 focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 outline-none transition-all text-sm font-medium hover:border-[#bb9661]"
                   />
                   <input
                     type="number" placeholder={t('max_price')}
                     value={filters.maxPrice}
                     onChange={e => update('maxPrice', e.target.value)}
-                    className="px-4 py-3 rounded-xl border border-gray-200 focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 outline-none transition-all text-sm"
+                    className="px-4 py-3 rounded-xl border border-gray-200 focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 outline-none transition-all text-sm font-medium hover:border-[#bb9661]"
                   />
                   <button
                     onClick={clearFilters}
-                    className="flex items-center justify-center space-x-2 px-4 py-3 rounded-xl border border-gray-200 hover:border-[#bb9661] hover:text-[#bb9661] transition-all text-sm"
+                    className="flex items-center justify-center space-x-2 px-4 py-3 rounded-xl border border-gray-200 hover:border-[#bb9661] hover:text-[#bb9661] hover:bg-[#bb9661]/5 transition-all text-sm font-medium"
                   >
                     <X className="w-5 h-5" />
                     <span>{t('clear_filters')}</span>

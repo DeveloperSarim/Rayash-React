@@ -80,6 +80,17 @@ const resources = {
       leadership_sub: 'Our Team',
       leadership_title: 'Leadership & Management',
       leadership_desc: 'We have a leadership team with extensive experience in real estate and marketing, committed to developing and providing the best services to clients and partners.',
+      
+      // Team Members
+      team_member_1_name: 'Mr. Ayman Al-Ghamdi',
+      team_member_1_role: 'Chairman of the Board',
+      team_member_1_bio: 'Mr. Ayman has extensive experience in the real estate field that has made him one of the prominent names in this sector. He owns a real estate development company that has implemented many distinguished projects characterized by their modern designs and high quality.',
+      team_member_2_name: 'Mr. Abdullah Al-Zahrani',
+      team_member_2_role: 'General Manager',
+      team_member_2_bio: 'A pioneering name in the real estate field with over 20 years of experience. He has deep knowledge of the intricacies of the real estate market in Jeddah in particular, making him a trusted consultant for many clients.',
+      team_member_3_name: 'Mr. Mohammed Al-Muqbel',
+      team_member_3_role: 'Marketing and Sales Manager',
+      team_member_3_bio: 'Mr. Mohammed Al-Muqbel leads the marketing and sales system with a practical spirit and a data-based approach, connecting strategy and execution to increase qualified requests and improve conversion rates.',
 
       // Stats
       stat1_val: '3000+',
@@ -318,6 +329,17 @@ const resources = {
       leadership_sub: 'فريقنا',
       leadership_title: 'القيادة والإدارة',
       leadership_desc: 'لدينا فريق قيادي يمتلك خبرة واسعة في مجال العقارات والتسويق، ملتزم بتطوير وتقديم أفضل الخدمات للعملاء والشركاء.',
+      
+      // Team Members
+      team_member_1_name: 'السيد أيمن الغامدي',
+      team_member_1_role: 'رئيس مجلس الإدارة',
+      team_member_1_bio: 'يتمتع السيد أيمن بخبرة واسعة في مجال العقارات جعلته من الأسماء البارزة في هذا القطاع. يمتلك شركة تطوير عقاري نفذت العديد من المشاريع المتميزة التي تتسم بتصاميمها الحديثة والجودة العالية.',
+      team_member_2_name: 'السيد عبدالله الزحراني',
+      team_member_2_role: 'المدير العام',
+      team_member_2_bio: 'اسم رائد في مجال العقارات بخبرة تزيد عن 20 سنة. لديه معرفة عميقة بتفاصيل سوق العقارات بجدة بشكل خاص، مما يجعله مستشاراً موثوقاً للعديد من العملاء.',
+      team_member_3_name: 'السيد محمد المقبل',
+      team_member_3_role: 'مدير التسويق والمبيعات',
+      team_member_3_bio: 'يقود السيد محمد المقبل قسم التسويق والمبيعات برؤية عملية وأسلوب قائم على البيانات، ويوازن بين الاستراتيجية والتنفيذ لزيادة الطلبات المؤهلة وتحسين معدلات التحويل.',
 
       // Stats
       stat1_val: '3000+',

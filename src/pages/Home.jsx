@@ -414,15 +414,15 @@ function LeadershipSection() {
               transition={{ duration: 0.5, delay: i * 0.1 }} className="group">
               <div className="bg-white rounded-2xl overflow-hidden shadow-lg shadow-gray-200/50 border border-gray-100 transition-all duration-300 group-hover:shadow-xl">
                 <div className="relative h-72 overflow-hidden">
-                  <img src={m.image} alt={m.name} className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+                  <img src={m.image} alt={t(`team_member_${m.id}_name`)} className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#242424]/60 via-transparent to-transparent" />
                   <div className="absolute inset-4 border-2 border-[#bb9661] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
                 <div className="p-6 text-center">
                   <div className="w-8 h-0.5 bg-[#bb9661] mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-[#242424] mb-1">{m.name}</h3>
-                  <p className="text-[#bb9661] font-medium text-sm mb-4">{m.role}</p>
-                  <p className="text-gray-600 text-sm leading-relaxed">{m.bio}</p>
+                  <h3 className="text-xl font-bold text-[#242424] mb-1">{t(`team_member_${m.id}_name`)}</h3>
+                  <p className="text-[#bb9661] font-medium text-sm mb-4">{t(`team_member_${m.id}_role`)}</p>
+                  <p className="text-gray-600 text-sm leading-relaxed">{t(`team_member_${m.id}_bio`)}</p>
                 </div>
               </div>
             </motion.div>
