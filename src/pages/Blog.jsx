@@ -1,8 +1,11 @@
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import BlogCard from '../components/BlogCard'
 import { blogPosts } from '../data/blog'
 
 export default function Blog() {
+  const { t } = useTranslation()
+
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}
@@ -12,9 +15,9 @@ export default function Blog() {
       <div className="bg-[#242424] py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">Our Blog</h1>
+            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">{t('blog_title')}</h1>
             <p className="text-gray-400 max-w-2xl">
-              Real estate insights, market analysis, and guides for buyers and investors.
+              {t('blog_desc')}
             </p>
           </motion.div>
         </div>

@@ -2,10 +2,12 @@ import { useState, useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, SlidersHorizontal, Grid, List, X, MapPin, Bed, Bath, Maximize2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { properties, formatPrice } from '../data/properties'
 import PropertyCard from '../components/PropertyCard'
 
 export default function Properties() {
+  const { t } = useTranslation()
   const [searchParams, setSearchParams] = useSearchParams()
   const [viewMode, setViewMode] = useState('grid')
   const [showFilters, setShowFilters] = useState(false)
@@ -46,6 +48,14 @@ export default function Properties() {
     setSearchParams({})
   }
 
+  const getTypeLabel = (type) => {
+    if (type === 'villa') return t('type_villa')
+    if (type === 'apartment') return t('type_apt')
+    if (type === 'land') return t('type_land')
+    if (type === 'commercial') return t('type_commercial')
+    return type
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}
@@ -55,9 +65,9 @@ export default function Properties() {
       <div className="bg-[#242424] py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">Properties</h1>
+            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">{t('prop_page_title')}</h1>
             <p className="text-gray-400 max-w-2xl">
-              Discover our exclusive collection of premium properties for sale and rent across Saudi Arabia.
+              {t('prop_page_desc')}
             </p>
           </motion.div>
         </div>
@@ -72,7 +82,7 @@ export default function Properties() {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search by title, location, or code..."
+                placeholder={t('search_ph')}
                 value={filters.search}
                 onChange={e => update('search', e.target.value)}
                 className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 outline-none transition-all"
@@ -88,9 +98,9 @@ export default function Properties() {
                   onChange={e => update('status', e.target.value)}
                   className="px-3 py-2.5 rounded-xl border border-gray-200 focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 outline-none transition-all bg-white text-sm"
                 >
-                  <option value="all">All Status</option>
-                  <option value="for-sale">For Sale</option>
-                  <option value="for-rent">For Rent</option>
+                  <option value="all">{t('all_status')}</option>
+                  <option value="for-sale">{t('for_sale')}</option>
+                  <option value="for-rent">{t('for_rent')}</option>
                 </select>
 
                 {/* Type */}
@@ -99,11 +109,11 @@ export default function Properties() {
                   onChange={e => update('type', e.target.value)}
                   className="px-3 py-2.5 rounded-xl border border-gray-200 focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 outline-none transition-all bg-white text-sm"
                 >
-                  <option value="all">All Types</option>
-                  <option value="villa">Villa</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="land">Land</option>
-                  <option value="commercial">Commercial</option>
+                  <option value="all">{t('all_types')}</option>
+                  <option value="villa">{t('type_villa')}</option>
+                  <option value="apartment">{t('type_apt')}</option>
+                  <option value="land">{t('type_land')}</option>
+                  <option value="commercial">{t('type_commercial')}</option>
                 </select>
 
                 {/* Advanced filters toggle */}
@@ -114,7 +124,7 @@ export default function Properties() {
                   }`}
                 >
                   <SlidersHorizontal className="w-4 h-4" />
-                  <span>Filters</span>
+                  <span>{t('filters_btn')}</span>
                 </button>
               </div>
 
@@ -151,17 +161,17 @@ export default function Properties() {
                     onChange={e => update('city', e.target.value)}
                     className="px-4 py-3 rounded-xl border border-gray-200 focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 outline-none transition-all bg-white text-sm"
                   >
-                    <option value="all">All Cities</option>
+                    <option value="all">{t('all_cities')}</option>
                     {cities.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                   <input
-                    type="number" placeholder="Min Price (SAR)"
+                    type="number" placeholder={t('min_price')}
                     value={filters.minPrice}
                     onChange={e => update('minPrice', e.target.value)}
                     className="px-4 py-3 rounded-xl border border-gray-200 focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 outline-none transition-all text-sm"
                   />
                   <input
-                    type="number" placeholder="Max Price (SAR)"
+                    type="number" placeholder={t('max_price')}
                     value={filters.maxPrice}
                     onChange={e => update('maxPrice', e.target.value)}
                     className="px-4 py-3 rounded-xl border border-gray-200 focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 outline-none transition-all text-sm"
@@ -171,7 +181,7 @@ export default function Properties() {
                     className="flex items-center justify-center space-x-2 px-4 py-3 rounded-xl border border-gray-200 hover:border-[#bb9661] hover:text-[#bb9661] transition-all text-sm"
                   >
                     <X className="w-5 h-5" />
-                    <span>Clear Filters</span>
+                    <span>{t('clear_filters')}</span>
                   </button>
                 </div>
               </motion.div>
@@ -183,7 +193,7 @@ export default function Properties() {
       {/* Results Count */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <p className="text-gray-600">
-          Showing <span className="font-semibold text-[#242424]">{filtered.length}</span> properties
+          {t('showing')} <span className="font-semibold text-[#242424]">{filtered.length}</span> {t('properties_count')}
         </p>
       </div>
 
@@ -194,8 +204,8 @@ export default function Properties() {
             <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
               <Search className="w-10 h-10 text-gray-400" />
             </div>
-            <h3 className="text-xl font-semibold text-[#242424] mb-2">No properties found</h3>
-            <p className="text-gray-600">Try adjusting your filters or search criteria</p>
+            <h3 className="text-xl font-semibold text-[#242424] mb-2">{t('no_properties')}</h3>
+            <p className="text-gray-600">{t('no_properties_sub')}</p>
           </div>
         ) : viewMode === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -231,13 +241,13 @@ export default function Properties() {
                       <img src={p.image} alt={p.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                       <div className="absolute top-4 left-4 flex space-x-2">
                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${p.status === 'for-sale' ? 'bg-[#bb9661] text-white' : 'bg-[#242424] text-white'}`}>
-                          {p.status === 'for-sale' ? 'For Sale' : 'For Rent'}
+                          {p.status === 'for-sale' ? t('for_sale') : t('for_rent')}
                         </span>
                       </div>
                     </div>
                     <div className="p-6 flex-1 flex flex-col justify-between">
                       <div>
-                        <span className="text-xs font-medium text-[#bb9661] uppercase tracking-wider">{p.type}</span>
+                        <span className="text-xs font-medium text-[#bb9661] uppercase tracking-wider">{getTypeLabel(p.type)}</span>
                         <h3 className="text-xl font-semibold text-[#242424] mt-1 mb-2 group-hover:text-[#bb9661] transition-colors">{p.title}</h3>
                         <div className="flex items-center text-gray-500 text-sm mb-4">
                           <MapPin className="w-4 h-4 mr-1" />

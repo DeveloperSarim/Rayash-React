@@ -1,33 +1,35 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { MapPin, Phone, Mail, Clock, CheckCircle } from 'lucide-react'
-
-const contactInfo = [
-  {
-    icon: MapPin,
-    title: 'Our Location',
-    details: ['Jeddah, Al-Sharaa District', 'Prince Naif Road'],
-  },
-  {
-    icon: Phone,
-    title: 'Phone Number',
-    details: ['920014891'],
-  },
-  {
-    icon: Mail,
-    title: 'Email Address',
-    details: ['info@ror.sa', 'support@ror.sa'],
-  },
-  {
-    icon: Clock,
-    title: 'Working Hours',
-    details: ['Sun – Thu: 9:00 AM – 6:00 PM', 'Sat: 10:00 AM – 4:00 PM'],
-  },
-]
+import { useTranslation } from 'react-i18next'
 
 export default function Contact() {
+  const { t } = useTranslation()
   const [submitted, setSubmitted] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' })
+
+  const contactInfo = [
+    {
+      icon: MapPin,
+      title: t('contact_location_title'),
+      details: [t('contact_location'), t('contact_location2')],
+    },
+    {
+      icon: Phone,
+      title: t('contact_phone_card'),
+      details: ['920014891'],
+    },
+    {
+      icon: Mail,
+      title: t('contact_email_card'),
+      details: ['info@ror.sa', 'support@ror.sa'],
+    },
+    {
+      icon: Clock,
+      title: t('contact_hours_title'),
+      details: [t('contact_hours1'), t('contact_hours2')],
+    },
+  ]
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -47,9 +49,9 @@ export default function Contact() {
       <div className="bg-[#242424] py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">Contact Us</h1>
+            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">{t('contact_page_title')}</h1>
             <p className="text-gray-400 max-w-2xl">
-              Get in touch with our expert team for any real estate inquiries.
+              {t('contact_page_desc')}
             </p>
           </motion.div>
         </div>
@@ -85,65 +87,65 @@ export default function Contact() {
               viewport={{ once: true }} transition={{ duration: 0.8 }}
             >
               <div className="bg-white rounded-2xl p-10 shadow-xl shadow-gray-200/50">
-                <span className="text-[#bb9661] text-sm font-medium uppercase tracking-wider">Send Us a Message</span>
-                <h2 className="text-2xl font-bold text-[#242424] mt-2 mb-6">Get In Touch</h2>
+                <span className="text-[#bb9661] text-sm font-medium uppercase tracking-wider">{t('contact_form_subtitle')}</span>
+                <h2 className="text-2xl font-bold text-[#242424] mt-2 mb-6">{t('contact_form_heading')}</h2>
                 <div className="w-12 h-0.5 bg-[#bb9661] mb-8" />
 
                 {submitted ? (
                   <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-12">
                     <CheckCircle size={64} className="text-green-500 mx-auto mb-4" />
-                    <h3 className="text-2xl font-semibold text-[#242424] mb-3">Message Sent!</h3>
-                    <p className="text-gray-500">Thank you for contacting us. Our team will get back to you within 24 hours.</p>
+                    <h3 className="text-2xl font-semibold text-[#242424] mb-3">{t('contact_sent_title')}</h3>
+                    <p className="text-gray-500">{t('contact_sent_desc')}</p>
                   </motion.div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div>
-                        <label className="block text-[#242424] text-sm font-medium mb-2">Full Name *</label>
+                        <label className="block text-[#242424] text-sm font-medium mb-2">{t('full_name_label')}</label>
                         <input type="text" required value={form.name}
                           onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-                          placeholder="Your full name"
+                          placeholder={t('contact_name_ph')}
                           className="w-full border border-gray-200 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 transition-colors" />
                       </div>
                       <div>
-                        <label className="block text-[#242424] text-sm font-medium mb-2">Email Address *</label>
+                        <label className="block text-[#242424] text-sm font-medium mb-2">{t('email_label')}</label>
                         <input type="email" required value={form.email}
                           onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-                          placeholder="your@email.com"
+                          placeholder={t('contact_email_ph')}
                           className="w-full border border-gray-200 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 transition-colors" />
                       </div>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div>
-                        <label className="block text-[#242424] text-sm font-medium mb-2">Phone Number</label>
+                        <label className="block text-[#242424] text-sm font-medium mb-2">{t('phone_label')}</label>
                         <input type="tel" value={form.phone}
                           onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
-                          placeholder="920014891"
+                          placeholder={t('contact_phone_ph')}
                           className="w-full border border-gray-200 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 transition-colors" />
                       </div>
                       <div>
-                        <label className="block text-[#242424] text-sm font-medium mb-2">Subject</label>
+                        <label className="block text-[#242424] text-sm font-medium mb-2">{t('contact_subject_label')}</label>
                         <select value={form.subject}
                           onChange={e => setForm(p => ({ ...p, subject: e.target.value }))}
                           className="w-full border border-gray-200 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 transition-colors bg-white text-gray-600">
-                          <option value="">Select a subject</option>
-                          <option>Property Inquiry</option>
-                          <option>Investment Advice</option>
-                          <option>Property Management</option>
-                          <option>General Question</option>
+                          <option value="">{t('contact_subject_ph')}</option>
+                          <option>{t('contact_subj1')}</option>
+                          <option>{t('contact_subj2')}</option>
+                          <option>{t('contact_subj3')}</option>
+                          <option>{t('contact_subj4')}</option>
                         </select>
                       </div>
                     </div>
                     <div>
-                      <label className="block text-[#242424] text-sm font-medium mb-2">Message *</label>
+                      <label className="block text-[#242424] text-sm font-medium mb-2">{t('msg_label')}</label>
                       <textarea required rows={5} value={form.message}
                         onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
-                        placeholder="How can we help you?"
+                        placeholder={t('contact_msg_ph')}
                         className="w-full border border-gray-200 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#bb9661] focus:ring-2 focus:ring-[#bb9661]/20 transition-colors resize-none" />
                     </div>
                     <button type="submit"
                       className="w-full py-4 bg-[#bb9661] text-white font-medium rounded-full hover:bg-[#a88450] transition-all hover:shadow-lg hover:shadow-[#bb9661]/30">
-                      Send Message
+                      {t('contact_send')}
                     </button>
                   </form>
                 )}

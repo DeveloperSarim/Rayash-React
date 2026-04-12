@@ -62,7 +62,7 @@ export default function Navigation() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-3 flex-shrink-0">
+            <Link to="/" className="flex items-center gap-3 flex-shrink-0">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 className={`text-2xl font-bold font-serif transition-colors ${
@@ -74,7 +74,7 @@ export default function Navigation() {
             </Link>
 
             {/* Desktop Nav Links */}
-            <div className="hidden lg:flex items-center space-x-8">
+            <div className="hidden lg:flex items-center gap-8">
               {navLinks.map((link) => (
                 link.external ? (
                   <a
@@ -109,10 +109,10 @@ export default function Navigation() {
             </div>
 
             {/* Desktop Right Side */}
-            <div className="hidden lg:flex items-center space-x-4">
+            <div className="hidden lg:flex items-center gap-4">
               <a
                 href="tel:920014891"
-                className={`flex items-center space-x-2 text-sm font-medium transition-colors ${
+                className={`flex items-center gap-2 text-sm font-medium transition-colors ${
                   isWhite ? 'text-[#242424]' : 'text-white'
                 }`}
               >
@@ -124,7 +124,7 @@ export default function Navigation() {
               <div className="relative" onClick={e => e.stopPropagation()}>
                 <button
                   onClick={() => setLangOpen(!langOpen)}
-                  className={`flex items-center space-x-1.5 px-3 py-2 rounded-full border transition-all text-sm font-medium ${
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-full border transition-all text-sm font-medium ${
                     isWhite
                       ? 'border-gray-200 text-[#242424] hover:border-[#bb9661] hover:text-[#bb9661]'
                       : 'border-white/30 text-white hover:border-white'
@@ -140,11 +140,11 @@ export default function Navigation() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -8, scale: 0.95 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute top-full mt-2 right-0 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden min-w-[120px] z-50"
+                      className={`absolute top-full mt-2 ${isArabic ? 'left-0' : 'right-0'} bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden min-w-[120px] z-50`}
                     >
                       <button
                         onClick={() => switchLanguage('en')}
-                        className={`w-full flex items-center space-x-2 px-4 py-3 text-sm hover:bg-gray-50 transition-colors ${
+                        className={`w-full flex items-center gap-2 px-4 py-3 text-sm hover:bg-gray-50 transition-colors ${
                           !isArabic ? 'text-[#bb9661] font-semibold' : 'text-[#242424]'
                         }`}
                       >
@@ -152,7 +152,7 @@ export default function Navigation() {
                       </button>
                       <button
                         onClick={() => switchLanguage('ar')}
-                        className={`w-full flex items-center space-x-2 px-4 py-3 text-sm hover:bg-gray-50 transition-colors ${
+                        className={`w-full flex items-center gap-2 px-4 py-3 text-sm hover:bg-gray-50 transition-colors ${
                           isArabic ? 'text-[#bb9661] font-semibold' : 'text-[#242424]'
                         }`}
                       >
@@ -172,11 +172,11 @@ export default function Navigation() {
             </div>
 
             {/* Mobile Right Side: language + hamburger */}
-            <div className="lg:hidden flex items-center space-x-2">
+            <div className="lg:hidden flex items-center gap-2">
               {/* Mobile Language Toggle */}
               <button
                 onClick={() => switchLanguage(isArabic ? 'en' : 'ar')}
-                className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-full border text-xs font-medium transition-all ${
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full border text-xs font-medium transition-all ${
                   isWhite
                     ? 'border-gray-200 text-[#242424] hover:border-[#bb9661]'
                     : 'border-white/30 text-white'
@@ -236,7 +236,7 @@ export default function Navigation() {
                           href={link.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center space-x-3 p-4 rounded-xl transition-all text-[#242424] hover:bg-gray-100"
+                          className="flex items-center gap-3 p-4 rounded-xl transition-all text-[#242424] hover:bg-gray-100"
                         >
                           <link.icon className="w-5 h-5 flex-shrink-0" />
                           <span className="font-medium">{link.label}</span>
@@ -244,7 +244,7 @@ export default function Navigation() {
                       ) : (
                         <Link
                           to={link.path}
-                          className={`flex items-center space-x-3 p-4 rounded-xl transition-all ${
+                          className={`flex items-center gap-3 p-4 rounded-xl transition-all ${
                             location.pathname === link.path
                               ? 'bg-[#bb9661]/10 text-[#bb9661]'
                               : 'text-[#242424] hover:bg-gray-100'
@@ -263,10 +263,10 @@ export default function Navigation() {
                   <p className="text-xs text-gray-400 uppercase tracking-wider mb-3 px-2">
                     {isArabic ? 'اللغة' : 'Language'}
                   </p>
-                  <div className="flex space-x-2">
+                  <div className="flex gap-2">
                     <button
                       onClick={() => switchLanguage('en')}
-                      className={`flex-1 flex items-center justify-center space-x-2 py-2.5 rounded-xl border text-sm font-medium transition-all ${
+                      className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border text-sm font-medium transition-all ${
                         !isArabic ? 'bg-[#bb9661] text-white border-[#bb9661]' : 'border-gray-200 text-[#242424]'
                       }`}
                     >
@@ -274,7 +274,7 @@ export default function Navigation() {
                     </button>
                     <button
                       onClick={() => switchLanguage('ar')}
-                      className={`flex-1 flex items-center justify-center space-x-2 py-2.5 rounded-xl border text-sm font-medium transition-all ${
+                      className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border text-sm font-medium transition-all ${
                         isArabic ? 'bg-[#bb9661] text-white border-[#bb9661]' : 'border-gray-200 text-[#242424]'
                       }`}
                     >
@@ -286,7 +286,7 @@ export default function Navigation() {
                 <div className="mt-4">
                   <a
                     href="tel:920014891"
-                    className="flex items-center justify-center space-x-2 w-full p-4 bg-[#bb9661] text-white rounded-xl font-medium"
+                    className="flex items-center justify-center gap-2 w-full p-4 bg-[#bb9661] text-white rounded-xl font-medium"
                   >
                     <Phone className="w-5 h-5" />
                     <span>920014891</span>

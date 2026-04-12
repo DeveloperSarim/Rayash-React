@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { PlayCircle, Eye, ArrowRight } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 const tours = [
   {
@@ -54,6 +55,8 @@ const tours = [
 ]
 
 export default function VirtualTours() {
+  const { t } = useTranslation()
+
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}
@@ -63,9 +66,9 @@ export default function VirtualTours() {
       <div className="bg-[#242424] py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">Virtual Tours</h1>
+            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">{t('tours_title')}</h1>
             <p className="text-gray-400 max-w-2xl">
-              Experience our properties from anywhere in the world with immersive virtual tours.
+              {t('tours_desc')}
             </p>
           </motion.div>
         </div>
@@ -75,11 +78,11 @@ export default function VirtualTours() {
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-[#bb9661] text-sm font-medium uppercase tracking-wider">Explore Virtually</span>
-            <h2 className="text-3xl font-bold text-[#242424] mt-2 mb-4">Property Tours</h2>
+            <span className="text-[#bb9661] text-sm font-medium uppercase tracking-wider">{t('tours_sub')}</span>
+            <h2 className="text-3xl font-bold text-[#242424] mt-2 mb-4">{t('tours_heading')}</h2>
             <div className="w-12 h-0.5 bg-[#bb9661] mx-auto mb-6" />
             <p className="text-gray-500 max-w-xl mx-auto">
-              Take a virtual walk through our premium properties without leaving your home.
+              {t('tours_sub_desc')}
             </p>
           </div>
 
@@ -114,13 +117,13 @@ export default function VirtualTours() {
                   <h3 className="font-semibold text-[#242424] text-lg mb-1">{tour.title}</h3>
                   <p className="text-gray-500 text-sm mb-4">{tour.location}</p>
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-400 text-xs">Code: {tour.code}</span>
+                    <span className="text-gray-400 text-xs">{t('code_label')}: {tour.code}</span>
                     <Link
                       to={`/property/${tour.id}`}
                       className="inline-flex items-center gap-1.5 text-[#bb9661] text-sm font-medium hover:gap-3 transition-all"
                     >
                       <Eye size={15} />
-                      View Property
+                      {t('view_property')}
                       <ArrowRight size={14} />
                     </Link>
                   </div>
@@ -134,15 +137,15 @@ export default function VirtualTours() {
       {/* CTA */}
       <section className="py-16 bg-[#242424]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">Want a Personal Tour?</h2>
+          <h2 className="text-3xl font-bold text-white mb-4">{t('cta_tour_title')}</h2>
           <p className="text-gray-400 mb-8">
-            Schedule an in-person or virtual tour with one of our property experts.
+            {t('cta_tour_desc')}
           </p>
           <Link
             to="/contact"
             className="inline-flex items-center gap-2 px-8 py-4 bg-[#bb9661] text-white font-medium rounded-full hover:bg-[#a88450] transition-all hover:shadow-lg hover:shadow-[#bb9661]/30"
           >
-            Schedule a Tour
+            {t('schedule_tour')}
             <ArrowRight size={18} />
           </Link>
         </div>

@@ -1,20 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
-
-const quickLinks = [
-  { path: '/', label: 'Home' },
-  { path: '/properties', label: 'Properties' },
-  { path: '/blog', label: 'Blog' },
-  { path: '/contact', label: 'Contact' },
-]
-
-const services = [
-  'Real Estate Marketing',
-  'Property Management',
-  'Real Estate Consulting',
-  'Virtual Tours',
-]
+import { useTranslation } from 'react-i18next'
 
 const socialLinks = [
   { icon: Facebook, href: '#', label: 'Facebook' },
@@ -24,7 +11,22 @@ const socialLinks = [
 ]
 
 export default function Footer() {
+  const { t } = useTranslation()
   const year = new Date().getFullYear()
+
+  const quickLinks = [
+    { path: '/', label: t('nav_home') },
+    { path: '/properties', label: t('nav_properties') },
+    { path: '/blog', label: t('nav_blog') },
+    { path: '/contact', label: t('nav_contact') },
+  ]
+
+  const services = [
+    t('footer_service_marketing'),
+    t('footer_service_management'),
+    t('footer_service_consulting'),
+    t('footer_service_tours'),
+  ]
 
   return (
     <footer className="bg-[#242424] text-white">
@@ -46,7 +48,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              Rayash Real Estate is your trusted partner in the Kingdom of Saudi Arabia. We build your real estate future with confidence and excellence, offering integrated real estate solutions that combine local expertise with a future vision.
+              {t('footer_desc')}
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((s) => (
@@ -70,7 +72,7 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <h3 className="text-lg font-semibold mb-6 text-[#bb9661]">Quick Links</h3>
+            <h3 className="text-lg font-semibold mb-6 text-[#bb9661]">{t('footer_quick')}</h3>
             <ul className="space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.path}>
@@ -93,7 +95,7 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h3 className="text-lg font-semibold mb-6 text-[#bb9661]">Our Services</h3>
+            <h3 className="text-lg font-semibold mb-6 text-[#bb9661]">{t('footer_services')}</h3>
             <ul className="space-y-3">
               {services.map((service) => (
                 <li key={service}>
@@ -113,19 +115,19 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <h3 className="text-lg font-semibold mb-6 text-[#bb9661]">Contact Us</h3>
+            <h3 className="text-lg font-semibold mb-6 text-[#bb9661]">{t('footer_contact')}</h3>
             <ul className="space-y-4 text-sm text-gray-400">
               <li>
-                <span className="block text-gray-500 text-xs uppercase tracking-wider mb-1">Phone</span>
+                <span className="block text-gray-500 text-xs uppercase tracking-wider mb-1">{t('footer_phone')}</span>
                 <a href="tel:920014891" className="hover:text-[#bb9661] transition-colors">920014891</a>
               </li>
               <li>
-                <span className="block text-gray-500 text-xs uppercase tracking-wider mb-1">Email</span>
+                <span className="block text-gray-500 text-xs uppercase tracking-wider mb-1">{t('footer_email')}</span>
                 <a href="mailto:info@ror.sa" className="hover:text-[#bb9661] transition-colors">info@ror.sa</a>
               </li>
               <li>
-                <span className="block text-gray-500 text-xs uppercase tracking-wider mb-1">Address</span>
-                <span>Prince Naif Road, Jeddah</span>
+                <span className="block text-gray-500 text-xs uppercase tracking-wider mb-1">{t('footer_address')}</span>
+                <span>{t('footer_address_value')}</span>
               </li>
             </ul>
           </motion.div>
@@ -135,10 +137,10 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
-          <p>© {year} Rayash Real Estate. All rights reserved.</p>
+          <p>© {year} Rayash Real Estate. {t('footer_rights')}</p>
           <div className="flex items-center gap-6">
-            <Link to="/privacy-policy" className="hover:text-[#bb9661] transition-colors">Privacy Policy</Link>
-            <Link to="/terms-of-service" className="hover:text-[#bb9661] transition-colors">Terms of Service</Link>
+            <Link to="/privacy-policy" className="hover:text-[#bb9661] transition-colors">{t('privacy_policy')}</Link>
+            <Link to="/terms-of-service" className="hover:text-[#bb9661] transition-colors">{t('terms_service')}</Link>
           </div>
         </div>
       </div>

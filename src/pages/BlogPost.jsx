@@ -1,27 +1,29 @@
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Calendar, User, ArrowLeft, ArrowRight } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { getBlogPostById, blogPosts } from '../data/blog'
 import BlogCard from '../components/BlogCard'
 
 export default function BlogPost() {
   const { id } = useParams()
+  const { t, i18n } = useTranslation()
   const post = getBlogPostById(id)
 
   if (!post) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-semibold text-[#242424] mb-4">Article Not Found</h2>
+          <h2 className="text-2xl font-semibold text-[#242424] mb-4">{t('article_not_found')}</h2>
           <Link to="/blog" className="px-6 py-3 bg-[#bb9661] text-white font-medium rounded-full hover:bg-[#a88450] transition-all">
-            Back to Blog
+            {t('back_blog')}
           </Link>
         </div>
       </div>
     )
   }
 
-  const formattedDate = new Date(post.date).toLocaleDateString('en-US', {
+  const formattedDate = new Date(post.date).toLocaleDateString(i18n.language === 'ar' ? 'ar-SA' : 'en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -69,7 +71,7 @@ export default function BlogPost() {
           className="inline-flex items-center gap-2 text-gray-500 hover:text-[#bb9661] transition-colors text-sm mb-10"
         >
           <ArrowLeft size={16} />
-          Back to Blog
+          {t('back_blog')}
         </Link>
 
         <div
@@ -86,16 +88,16 @@ export default function BlogPost() {
         <div className="mt-12 pt-8 border-t border-gray-200">
           <div className="bg-[#bb9661]/5 border border-[#bb9661]/20 rounded-2xl p-8">
             <h3 className="text-xl font-semibold text-[#242424] mb-3">
-              Need Expert Real Estate Advice?
+              {t('need_advice')}
             </h3>
             <p className="text-gray-600 text-sm mb-4">
-              Our team at Rayash Real Estate is here to help you make the best property decisions.
+              {t('advice_desc')}
             </p>
             <Link
               to="/contact"
               className="inline-flex items-center gap-2 px-6 py-3 bg-[#bb9661] text-white font-medium rounded-full hover:bg-[#a88450] transition-all hover:shadow-lg hover:shadow-[#bb9661]/30"
             >
-              Contact Us Today
+              {t('contact_today')}
               <ArrowRight size={16} />
             </Link>
           </div>
@@ -105,7 +107,7 @@ export default function BlogPost() {
       {/* Related Posts */}
       <div className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-[#242424] mb-8">More Articles</h2>
+          <h2 className="text-2xl font-bold text-[#242424] mb-8">{t('more_articles')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {related.map((p) => (
               <BlogCard key={p.id} post={p} />

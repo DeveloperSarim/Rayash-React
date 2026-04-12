@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Calendar, User, ArrowRight } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 export default function BlogCard({ post }) {
+  const { t, i18n } = useTranslation()
   const { id, title, date, author, category, image, excerpt } = post
 
-  const formattedDate = new Date(date).toLocaleDateString('en-US', {
+  const formattedDate = new Date(date).toLocaleDateString(i18n.language === 'ar' ? 'ar-SA' : 'en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -54,7 +56,7 @@ export default function BlogCard({ post }) {
             to={`/blog/${id}`}
             className="inline-flex items-center space-x-2 text-[#bb9661] font-medium group/link mt-auto"
           >
-            <span>Read More</span>
+            <span>{t('read_more')}</span>
             <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
           </Link>
         </div>

@@ -1,7 +1,18 @@
 import { MapPin, Bed, Bath, Maximize2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { formatPrice } from '../data/properties'
 
 export default function PropertyCard({ property: p }) {
+  const { t } = useTranslation()
+
+  const getTypeLabel = (type) => {
+    if (type === 'villa') return t('type_villa')
+    if (type === 'apartment') return t('type_apt')
+    if (type === 'land') return t('type_land')
+    if (type === 'commercial') return t('type_commercial')
+    return type
+  }
+
   return (
     <div className="bg-white rounded-2xl overflow-hidden shadow-lg shadow-gray-200/50 border border-gray-100 transition-all duration-300 group-hover:shadow-xl group-hover:shadow-[#bb9661]/10">
       {/* Image */}
@@ -14,10 +25,10 @@ export default function PropertyCard({ property: p }) {
         {/* Status + Type badges */}
         <div className="absolute top-4 left-4 flex space-x-2">
           <span className={`px-3 py-1 rounded-full text-xs font-medium ${p.status === 'for-sale' ? 'bg-[#bb9661] text-white' : 'bg-[#242424] text-white'}`}>
-            {p.status === 'for-sale' ? 'For Sale' : 'For Rent'}
+            {p.status === 'for-sale' ? t('for_sale') : t('for_rent')}
           </span>
           <span className="px-3 py-1 rounded-full text-xs font-medium bg-white/90 text-[#242424]">
-            {p.type.charAt(0).toUpperCase() + p.type.slice(1)}
+            {getTypeLabel(p.type)}
           </span>
         </div>
         {/* Price badge */}

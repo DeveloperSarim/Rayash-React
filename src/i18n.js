@@ -177,6 +177,7 @@ const resources = {
       read_more: 'Read More',
       more_articles: 'More Articles',
       back_blog: 'Back to Blog',
+      article_not_found: 'Article Not Found',
       need_advice: 'Need Expert Real Estate Advice?',
       advice_desc: 'Our team at Rayash Real Estate is here to help you make the best property decisions.',
       contact_today: 'Contact Us Today',
@@ -204,6 +205,16 @@ const resources = {
       your_message: 'Your Message',
       send_inquiry: 'Send Inquiry',
       share_property: 'Share This Property',
+      copy_property_link: 'Copy Property Link',
+      link_copied: 'Link Copied',
+      share_facebook: 'Facebook',
+      share_linkedin: 'LinkedIn',
+      share_whatsapp: 'WhatsApp',
+      share_on_facebook: 'Share on Facebook',
+      share_on_linkedin: 'Share on LinkedIn',
+      share_on_whatsapp: 'Share on WhatsApp',
+      property_not_found: 'Property Not Found',
+      code_label: 'Code',
       description_heading: 'Description',
       features_heading: 'Features & Amenities',
       similar_properties: 'Similar Properties',
@@ -214,7 +225,18 @@ const resources = {
       // Footer
       footer_desc: 'Your trusted partner in real estate across the Kingdom of Saudi Arabia.',
       footer_quick: 'Quick Links',
+      footer_services: 'Our Services',
       footer_contact: 'Contact',
+      footer_service_marketing: 'Real Estate Marketing',
+      footer_service_management: 'Property Management',
+      footer_service_consulting: 'Real Estate Consulting',
+      footer_service_tours: 'Virtual Tours',
+      footer_phone: 'Phone',
+      footer_email: 'Email',
+      footer_address: 'Address',
+      footer_address_value: 'Prince Naif Road, Jeddah',
+      privacy_policy: 'Privacy Policy',
+      terms_service: 'Terms of Service',
       footer_rights: 'All rights reserved.',
     }
   },
@@ -393,6 +415,7 @@ const resources = {
       read_more: 'اقرأ المزيد',
       more_articles: 'مزيد من المقالات',
       back_blog: 'العودة إلى المدونة',
+      article_not_found: 'المقال غير موجود',
       need_advice: 'هل تحتاج إلى نصيحة عقارية متخصصة؟',
       advice_desc: 'فريقنا في راياش للعقارات هنا لمساعدتك في اتخاذ أفضل قرارات عقارية.',
       contact_today: 'تواصل معنا اليوم',
@@ -420,6 +443,16 @@ const resources = {
       your_message: 'رسالتك',
       send_inquiry: 'إرسال الاستفسار',
       share_property: 'مشاركة هذا العقار',
+      copy_property_link: 'نسخ رابط العقار',
+      link_copied: 'تم نسخ الرابط',
+      share_facebook: 'فيسبوك',
+      share_linkedin: 'لينكدإن',
+      share_whatsapp: 'واتساب',
+      share_on_facebook: 'مشاركة عبر فيسبوك',
+      share_on_linkedin: 'مشاركة عبر لينكدإن',
+      share_on_whatsapp: 'مشاركة عبر واتساب',
+      property_not_found: 'العقار غير موجود',
+      code_label: 'الرمز',
       description_heading: 'الوصف',
       features_heading: 'المزايا والمرافق',
       similar_properties: 'عقارات مشابهة',
@@ -430,17 +463,49 @@ const resources = {
       // Footer
       footer_desc: 'شريكك الموثوق في العقارات في جميع أنحاء المملكة العربية السعودية.',
       footer_quick: 'روابط سريعة',
+      footer_services: 'خدماتنا',
       footer_contact: 'تواصل معنا',
+      footer_service_marketing: 'التسويق العقاري',
+      footer_service_management: 'إدارة الممتلكات',
+      footer_service_consulting: 'الاستشارات العقارية',
+      footer_service_tours: 'الجولات الافتراضية',
+      footer_phone: 'الهاتف',
+      footer_email: 'البريد الإلكتروني',
+      footer_address: 'العنوان',
+      footer_address_value: 'طريق الأمير نايف، جدة',
+      privacy_policy: 'سياسة الخصوصية',
+      terms_service: 'شروط الاستخدام',
       footer_rights: 'جميع الحقوق محفوظة.',
     }
   }
 }
 
+const persistedLang = typeof window !== 'undefined' ? localStorage.getItem('rayash_lang') : null
+const browserLang = typeof navigator !== 'undefined' ? navigator.language?.toLowerCase() : 'en'
+const initialLang = persistedLang || (browserLang?.startsWith('ar') ? 'ar' : 'en')
+
 i18n.use(initReactI18next).init({
   resources,
-  lng: 'en',
+  lng: initialLang,
   fallbackLng: 'en',
   interpolation: { escapeValue: false },
+})
+
+if (typeof document !== 'undefined') {
+  const lang = i18n.language?.startsWith('ar') ? 'ar' : 'en'
+  document.documentElement.lang = lang
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
+}
+
+i18n.on('languageChanged', (lang) => {
+  const normalized = lang?.startsWith('ar') ? 'ar' : 'en'
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem('rayash_lang', normalized)
+  }
+  if (typeof document !== 'undefined') {
+    document.documentElement.lang = normalized
+    document.documentElement.dir = normalized === 'ar' ? 'rtl' : 'ltr'
+  }
 })
 
 export default i18n

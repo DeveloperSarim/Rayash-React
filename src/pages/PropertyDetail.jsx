@@ -1,17 +1,19 @@
 import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { MapPin, Bed, Bath, Maximize2, CheckCircle, ArrowLeft, Phone, Mail, Share2, Facebook, Linkedin, MessageCircle, Copy, Check } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { getPropertyById, properties, formatPrice } from '../data/properties'
 import PropertyCard from '../components/PropertyCard'
 
 export default function PropertyDetail() {
   const { id } = useParams()
+  const { t } = useTranslation()
   const property = getPropertyById(id)
   const [showShareOptions, setShowShareOptions] = useState(false)
   const [copied, setCopied] = useState(false)
 
   const shareUrl = typeof window !== 'undefined' ? window.location.href : ''
-  const shareText = `${property?.title ?? 'Property'} - ${property?.location ?? ''}`.trim()
+  const shareText = `${property?.title ?? t('prop_page_title')} - ${property?.location ?? ''}`.trim()
 
   const openShareWindow = (url) => {
     window.open(url, '_blank', 'noopener,noreferrer,width=600,height=700')
@@ -52,12 +54,20 @@ export default function PropertyDetail() {
     }
   }
 
+  const getTypeLabel = (type) => {
+    if (type === 'villa') return t('type_villa')
+    if (type === 'apartment') return t('type_apt')
+    if (type === 'land') return t('type_land')
+    if (type === 'commercial') return t('type_commercial')
+    return type
+  }
+
   if (!property) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="font-display text-2xl text-dark mb-4">Property Not Found</h2>
-          <Link to="/properties" className="btn-primary">Back to Properties</Link>
+          <h2 className="font-display text-2xl text-dark mb-4">{t('property_not_found')}</h2>
+          <Link to="/properties" className="btn-primary">{t('back_properties')}</Link>
         </div>
       </div>
     )
@@ -72,15 +82,15 @@ export default function PropertyDetail() {
       <div className="bg-[#242424] py-6">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center gap-2 text-gray-400 text-sm mb-3">
-            <Link to="/" className="hover:text-gold transition-colors">Home</Link>
+            <Link to="/" className="hover:text-gold transition-colors">{t('nav_home')}</Link>
             <span>/</span>
-            <Link to="/properties" className="hover:text-gold transition-colors">Properties</Link>
+            <Link to="/properties" className="hover:text-gold transition-colors">{t('nav_properties')}</Link>
             <span>/</span>
             <span className="text-gold">{property.code}</span>
           </div>
           <Link to="/properties" className="inline-flex items-center gap-2 text-gray-400 hover:text-gold transition-colors text-sm">
             <ArrowLeft size={16} />
-            Back to Properties
+            {t('back_properties')}
           </Link>
         </div>
       </div>
@@ -98,10 +108,10 @@ export default function PropertyDetail() {
               />
               <div className="absolute top-4 left-4 flex gap-2">
                 <span className={`text-white text-sm font-semibold px-3 py-1 rounded-full ${property.status === 'for-sale' ? 'bg-[#bb9661]' : 'bg-[#242424]'}`}>
-                  {property.status === 'for-sale' ? 'For Sale' : 'For Rent'}
+                  {property.status === 'for-sale' ? t('for_sale') : t('for_rent')}
                 </span>
                 <span className="bg-white/90 text-[#242424] text-sm font-semibold px-3 py-1 rounded-full">
-                  {property.type.charAt(0).toUpperCase() + property.type.slice(1)}
+                  {getTypeLabel(property.type)}
                 </span>
               </div>
             </div>
@@ -117,7 +127,7 @@ export default function PropertyDetail() {
               </div>
               <div className="text-right">
                 <div className="text-3xl font-bold text-[#bb9661]">{formatPrice(property.price, property.status)}</div>
-                <div className="text-gray-400 text-sm">Code: {property.code}</div>
+                <div className="text-gray-400 text-sm">{t('code_label')}: {property.code}</div>
               </div>
             </div>
 
@@ -127,21 +137,21 @@ export default function PropertyDetail() {
                 <div className="text-center">
                   <Bed size={24} className="text-gold mx-auto mb-2" />
                   <div className="font-bold text-dark text-xl">{property.bedrooms}</div>
-                  <div className="text-gray-500 text-sm">Bedrooms</div>
+                  <div className="text-gray-500 text-sm">{t('bedrooms')}</div>
                 </div>
               )}
               {property.bathrooms > 0 && (
                 <div className="text-center">
                   <Bath size={24} className="text-gold mx-auto mb-2" />
                   <div className="font-bold text-dark text-xl">{property.bathrooms}</div>
-                  <div className="text-gray-500 text-sm">Bathrooms</div>
+                  <div className="text-gray-500 text-sm">{t('bathrooms')}</div>
                 </div>
               )}
               {property.area > 0 && (
                 <div className="text-center">
                   <Maximize2 size={24} className="text-gold mx-auto mb-2" />
                   <div className="font-bold text-dark text-xl">{property.area}</div>
-                  <div className="text-gray-500 text-sm">Area (m²)</div>
+                  <div className="text-gray-500 text-sm">{t('area_label')}</div>
                 </div>
               )}
             </div>
@@ -149,7 +159,7 @@ export default function PropertyDetail() {
             {/* Description */}
             <div className="mb-8">
               <h2 className="font-display text-xl font-semibold text-dark mb-4 pb-2 border-b border-gray-200">
-                Description
+                {t('description_heading')}
               </h2>
               <p className="text-gray-600 leading-relaxed">{property.description}</p>
             </div>
@@ -157,7 +167,7 @@ export default function PropertyDetail() {
             {/* Features */}
             <div>
               <h2 className="font-display text-xl font-semibold text-dark mb-4 pb-2 border-b border-gray-200">
-                Features & Amenities
+                {t('features_heading')}
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {property.features.map((feature) => (
@@ -175,9 +185,9 @@ export default function PropertyDetail() {
             <div className="sticky top-32">
               {/* Contact Card */}
               <div className="bg-[#242424] p-8 mb-6">
-                <h3 className="font-display font-semibold text-white text-xl mb-6">Interested in This Property?</h3>
+                <h3 className="font-display font-semibold text-white text-xl mb-6">{t('interested_title')}</h3>
                 <p className="text-gray-400 text-sm mb-6">
-                  Contact our team for more information or to schedule a viewing.
+                  {t('interested_desc')}
                 </p>
 
                 <div className="space-y-3 mb-6">
@@ -186,14 +196,14 @@ export default function PropertyDetail() {
                     className="flex items-center gap-3 w-full bg-[#bb9661] text-white py-3 px-5 font-semibold hover:bg-[#a88450] transition-colors"
                   >
                     <Phone size={18} />
-                    Call Us Now
+                    {t('call_now')}
                   </a>
                   <a
                     href="mailto:info@ror.sa"
                     className="flex items-center gap-3 w-full border border-[#bb9661] text-[#bb9661] py-3 px-5 font-semibold hover:bg-[#bb9661] hover:text-white transition-colors"
                   >
                     <Mail size={18} />
-                    Email Us
+                    {t('email_us')}
                   </a>
                 </div>
 
@@ -201,22 +211,22 @@ export default function PropertyDetail() {
                 <form className="space-y-3">
                   <input
                     type="text"
-                    placeholder="Your Name"
+                    placeholder={t('your_name')}
                     className="w-full bg-white/10 border border-gray-700 text-white placeholder-gray-500 px-4 py-2.5 text-sm focus:outline-none focus:border-gold"
                   />
                   <input
                     type="email"
-                    placeholder="Your Email"
+                    placeholder={t('your_email')}
                     className="w-full bg-white/10 border border-gray-700 text-white placeholder-gray-500 px-4 py-2.5 text-sm focus:outline-none focus:border-gold"
                   />
                   <input
                     type="tel"
-                    placeholder="Your Phone"
+                    placeholder={t('your_phone')}
                     className="w-full bg-white/10 border border-gray-700 text-white placeholder-gray-500 px-4 py-2.5 text-sm focus:outline-none focus:border-gold"
                   />
                   <textarea
                     rows={3}
-                    placeholder="Your Message"
+                    placeholder={t('your_message')}
                     defaultValue={`I'm interested in property ${property.code} - ${property.title}`}
                     className="w-full bg-white/10 border border-gray-700 text-white placeholder-gray-500 px-4 py-2.5 text-sm focus:outline-none focus:border-gold resize-none"
                   />
@@ -224,7 +234,7 @@ export default function PropertyDetail() {
                     type="submit"
                     className="w-full bg-[#bb9661] text-white hover:text-white py-3 px-5 font-semibold hover:bg-[#a88450] transition-colors"
                   >
-                    Send Inquiry
+                    {t('send_inquiry')}
                   </button>
                 </form>
               </div>
@@ -237,7 +247,7 @@ export default function PropertyDetail() {
                   className="w-full flex items-center justify-center gap-2 py-2 text-[#242424] text-sm font-medium hover:text-[#bb9661] transition-colors"
                 >
                   <Share2 size={16} />
-                  Share This Property
+                  {t('share_property')}
                 </button>
 
                 {showShareOptions && (
@@ -247,28 +257,28 @@ export default function PropertyDetail() {
                         type="button"
                         onClick={() => handleShare('facebook')}
                         className="flex items-center justify-center gap-2 border border-gray-200 py-2 text-xs font-medium text-[#242424] hover:border-[#bb9661] hover:text-[#bb9661] transition-colors"
-                        aria-label="Share on Facebook"
+                        aria-label={t('share_on_facebook')}
                       >
                         <Facebook size={15} />
-                        Facebook
+                        {t('share_facebook')}
                       </button>
                       <button
                         type="button"
                         onClick={() => handleShare('linkedin')}
                         className="flex items-center justify-center gap-2 border border-gray-200 py-2 text-xs font-medium text-[#242424] hover:border-[#bb9661] hover:text-[#bb9661] transition-colors"
-                        aria-label="Share on LinkedIn"
+                        aria-label={t('share_on_linkedin')}
                       >
                         <Linkedin size={15} />
-                        LinkedIn
+                        {t('share_linkedin')}
                       </button>
                       <button
                         type="button"
                         onClick={() => handleShare('whatsapp')}
                         className="flex items-center justify-center gap-2 border border-gray-200 py-2 text-xs font-medium text-[#242424] hover:border-[#bb9661] hover:text-[#bb9661] transition-colors"
-                        aria-label="Share on WhatsApp"
+                        aria-label={t('share_on_whatsapp')}
                       >
                         <MessageCircle size={15} />
-                        WhatsApp
+                        {t('share_whatsapp')}
                       </button>
                     </div>
 
@@ -278,7 +288,7 @@ export default function PropertyDetail() {
                       className="w-full flex items-center justify-center gap-2 bg-[#bb9661] py-2.5 text-sm font-semibold text-white hover:bg-[#a88450] transition-colors"
                     >
                       {copied ? <Check size={16} /> : <Copy size={16} />}
-                      {copied ? 'Link Copied' : 'Copy Property Link'}
+                      {copied ? t('link_copied') : t('copy_property_link')}
                     </button>
                   </div>
                 )}
@@ -290,7 +300,7 @@ export default function PropertyDetail() {
         {/* Related Properties */}
         {related.length > 0 && (
           <div className="mt-16">
-            <h2 className="font-display text-2xl font-bold text-dark mb-8">Similar Properties</h2>
+            <h2 className="font-display text-2xl font-bold text-dark mb-8">{t('similar_properties')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {related.map((p) => (
                 <Link key={p.id} to={`/property/${p.id}`} className="group">
