@@ -1,11 +1,56 @@
+import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { MapPin, Bed, Bath, Maximize2, CheckCircle, ArrowLeft, Phone, Mail, Share2 } from 'lucide-react'
+import { MapPin, Bed, Bath, Maximize2, CheckCircle, ArrowLeft, Phone, Mail, Share2, Facebook, Linkedin, MessageCircle, Copy, Check } from 'lucide-react'
 import { getPropertyById, properties, formatPrice } from '../data/properties'
 import PropertyCard from '../components/PropertyCard'
 
 export default function PropertyDetail() {
   const { id } = useParams()
   const property = getPropertyById(id)
+  const [showShareOptions, setShowShareOptions] = useState(false)
+  const [copied, setCopied] = useState(false)
+
+  const shareUrl = typeof window !== 'undefined' ? window.location.href : ''
+  const shareText = `${property?.title ?? 'Property'} - ${property?.location ?? ''}`.trim()
+
+  const openShareWindow = (url) => {
+    window.open(url, '_blank', 'noopener,noreferrer,width=600,height=700')
+  }
+
+  const handleShare = (platform) => {
+    const encodedUrl = encodeURIComponent(shareUrl)
+    const encodedText = encodeURIComponent(shareText)
+
+    const platformUrls = {
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+      whatsapp: `https://wa.me/?text=${encodeURIComponent(`${shareText} ${shareUrl}`)}`,
+    }
+
+    if (platformUrls[platform]) {
+      openShareWindow(platformUrls[platform])
+    }
+  }
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      const textarea = document.createElement('textarea')
+      textarea.value = shareUrl
+      textarea.setAttribute('readonly', '')
+      textarea.style.position = 'absolute'
+      textarea.style.left = '-9999px'
+      document.body.appendChild(textarea)
+      textarea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textarea)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    }
+  }
 
   if (!property) {
     return (
@@ -129,7 +174,7 @@ export default function PropertyDetail() {
           <div className="lg:col-span-1">
             <div className="sticky top-32">
               {/* Contact Card */}
-              <div className="bg-dark p-8 mb-6">
+              <div className="bg-[#242424] p-8 mb-6">
                 <h3 className="font-display font-semibold text-white text-xl mb-6">Interested in This Property?</h3>
                 <p className="text-gray-400 text-sm mb-6">
                   Contact our team for more information or to schedule a viewing.
@@ -138,14 +183,14 @@ export default function PropertyDetail() {
                 <div className="space-y-3 mb-6">
                   <a
                     href="tel:+966"
-                    className="flex items-center gap-3 w-full bg-gold text-white py-3 px-5 font-semibold hover:bg-gold-dark transition-colors"
+                    className="flex items-center gap-3 w-full bg-[#bb9661] text-white py-3 px-5 font-semibold hover:bg-[#a88450] transition-colors"
                   >
                     <Phone size={18} />
                     Call Us Now
                   </a>
                   <a
                     href="mailto:info@ror.sa"
-                    className="flex items-center gap-3 w-full border border-gold text-gold py-3 px-5 font-semibold hover:bg-gold hover:text-white transition-colors"
+                    className="flex items-center gap-3 w-full border border-[#bb9661] text-[#bb9661] py-3 px-5 font-semibold hover:bg-[#bb9661] hover:text-white transition-colors"
                   >
                     <Mail size={18} />
                     Email Us
@@ -175,17 +220,69 @@ export default function PropertyDetail() {
                     defaultValue={`I'm interested in property ${property.code} - ${property.title}`}
                     className="w-full bg-white/10 border border-gray-700 text-white placeholder-gray-500 px-4 py-2.5 text-sm focus:outline-none focus:border-gold resize-none"
                   />
-                  <button type="submit" className="w-full btn-primary btn-shine">
+                  <button
+                    type="submit"
+                    className="w-full bg-[#bb9661] text-white hover:text-white py-3 px-5 font-semibold hover:bg-[#a88450] transition-colors"
+                  >
                     Send Inquiry
                   </button>
                 </form>
               </div>
 
               {/* Share */}
-              <button className="w-full flex items-center justify-center gap-2 border border-gray-200 py-3 text-dark text-sm font-medium hover:border-gold hover:text-gold transition-all">
-                <Share2 size={16} />
-                Share This Property
-              </button>
+              <div className="border border-gray-200 bg-white p-4">
+                <button
+                  type="button"
+                  onClick={() => setShowShareOptions((prev) => !prev)}
+                  className="w-full flex items-center justify-center gap-2 py-2 text-[#242424] text-sm font-medium hover:text-[#bb9661] transition-colors"
+                >
+                  <Share2 size={16} />
+                  Share This Property
+                </button>
+
+                {showShareOptions && (
+                  <div className="mt-4 space-y-3">
+                    <div className="grid grid-cols-3 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleShare('facebook')}
+                        className="flex items-center justify-center gap-2 border border-gray-200 py-2 text-xs font-medium text-[#242424] hover:border-[#bb9661] hover:text-[#bb9661] transition-colors"
+                        aria-label="Share on Facebook"
+                      >
+                        <Facebook size={15} />
+                        Facebook
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleShare('linkedin')}
+                        className="flex items-center justify-center gap-2 border border-gray-200 py-2 text-xs font-medium text-[#242424] hover:border-[#bb9661] hover:text-[#bb9661] transition-colors"
+                        aria-label="Share on LinkedIn"
+                      >
+                        <Linkedin size={15} />
+                        LinkedIn
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleShare('whatsapp')}
+                        className="flex items-center justify-center gap-2 border border-gray-200 py-2 text-xs font-medium text-[#242424] hover:border-[#bb9661] hover:text-[#bb9661] transition-colors"
+                        aria-label="Share on WhatsApp"
+                      >
+                        <MessageCircle size={15} />
+                        WhatsApp
+                      </button>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={handleCopyLink}
+                      className="w-full flex items-center justify-center gap-2 bg-[#bb9661] py-2.5 text-sm font-semibold text-white hover:bg-[#a88450] transition-colors"
+                    >
+                      {copied ? <Check size={16} /> : <Copy size={16} />}
+                      {copied ? 'Link Copied' : 'Copy Property Link'}
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
