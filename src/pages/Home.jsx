@@ -61,7 +61,7 @@ function HeroSection() {
   ]
 
   return (
-    <div ref={ref} className="relative h-screen overflow-hidden">
+    <div ref={ref} className="relative min-h-screen lg:h-screen overflow-hidden pt-20 lg:pt-0">
       {/* Parallax bg */}
       <motion.div style={{ y: bgY }} className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
