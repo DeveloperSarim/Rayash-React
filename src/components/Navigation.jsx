@@ -16,7 +16,7 @@ export default function Navigation() {
   const navLinks = [
     { path: '/', label: t('nav_home'), icon: Home },
     { path: '/properties', label: t('nav_properties'), icon: Building2 },
-    { path: '/virtual-tours', label: t('nav_tours'), icon: Compass },
+    { href: 'https://view.ror.sa', label: t('nav_tours'), icon: Compass, external: true },
     { path: '/blog', label: t('nav_blog'), icon: FileText },
     { path: '/contact', label: t('nav_contact'), icon: Mail },
   ]
@@ -76,21 +76,35 @@ export default function Navigation() {
             {/* Desktop Nav Links */}
             <div className="hidden lg:flex items-center space-x-8">
               {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`relative text-sm font-medium transition-colors hover:text-[#bb9661] ${
-                    isWhite ? 'text-[#242424]' : 'text-white'
-                  } ${location.pathname === link.path ? 'text-[#bb9661]' : ''}`}
-                >
-                  {link.label}
-                  {location.pathname === link.path && (
-                    <motion.div
-                      layoutId="navbar-indicator"
-                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#bb9661]"
-                    />
-                  )}
-                </Link>
+                link.external ? (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`relative text-sm font-medium transition-colors hover:text-[#bb9661] ${
+                      isWhite ? 'text-[#242424]' : 'text-white'
+                    }`}
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className={`relative text-sm font-medium transition-colors hover:text-[#bb9661] ${
+                      isWhite ? 'text-[#242424]' : 'text-white'
+                    } ${location.pathname === link.path ? 'text-[#bb9661]' : ''}`}
+                  >
+                    {link.label}
+                    {location.pathname === link.path && (
+                      <motion.div
+                        layoutId="navbar-indicator"
+                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#bb9661]"
+                      />
+                    )}
+                  </Link>
+                )
               ))}
             </div>
 
@@ -212,22 +226,34 @@ export default function Navigation() {
                 <div className="space-y-2">
                   {navLinks.map((link, i) => (
                     <motion.div
-                      key={link.path}
+                      key={link.external ? link.href : link.path}
                       initial={{ opacity: 0, x: isArabic ? -20 : 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.07 }}
                     >
-                      <Link
-                        to={link.path}
-                        className={`flex items-center space-x-3 p-4 rounded-xl transition-all ${
-                          location.pathname === link.path
-                            ? 'bg-[#bb9661]/10 text-[#bb9661]'
-                            : 'text-[#242424] hover:bg-gray-100'
-                        }`}
-                      >
-                        <link.icon className="w-5 h-5 flex-shrink-0" />
-                        <span className="font-medium">{link.label}</span>
-                      </Link>
+                      {link.external ? (
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center space-x-3 p-4 rounded-xl transition-all text-[#242424] hover:bg-gray-100"
+                        >
+                          <link.icon className="w-5 h-5 flex-shrink-0" />
+                          <span className="font-medium">{link.label}</span>
+                        </a>
+                      ) : (
+                        <Link
+                          to={link.path}
+                          className={`flex items-center space-x-3 p-4 rounded-xl transition-all ${
+                            location.pathname === link.path
+                              ? 'bg-[#bb9661]/10 text-[#bb9661]'
+                              : 'text-[#242424] hover:bg-gray-100'
+                          }`}
+                        >
+                          <link.icon className="w-5 h-5 flex-shrink-0" />
+                          <span className="font-medium">{link.label}</span>
+                        </Link>
+                      )}
                     </motion.div>
                   ))}
                 </div>
