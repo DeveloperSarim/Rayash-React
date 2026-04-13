@@ -34,10 +34,8 @@ Rayash is a sophisticated real estate marketplace designed for seamless property
 ## 📸 Preview
 
 <p align="center">
-  <img src="https://via.placeholder.com/800x450?text=Rayash+Real+Estate+Preview" alt="Rayash Preview" width="800">
+  <img src="public/preview.png" alt="Rayash Preview" width="800">
 </p>
-
-*Tip: Replace this placeholder with a real screenshot of your site from `public/preview.png`!*
 
 ---
 
@@ -70,7 +68,7 @@ The application will be available at:
 ---
 
 ## 📂 Project Structure
-
+x
 ```plaintext
 src/
  ├── components/     # Reusable UI elements (Navbar, Cards, Buttons)
