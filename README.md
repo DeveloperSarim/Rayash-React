@@ -2,10 +2,11 @@
 
 > A premium, high-performance Real Estate platform rewritten in modern React.
 
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen?style=for-the-badge\&logo=netlify)](https://rayash.netlify.app/)
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge\&logo=react\&logoColor=61DAFB)
-![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge\&logo=tailwind-css\&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge\&logo=vite\&logoColor=white)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/DeveloperSarim/Rayash-React)
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen?style=for-the-badge&logo=netlify)](https://rayash.netlify.app/)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=for-the-badge)
 
 Rayash is a sophisticated real estate marketplace designed for seamless property discovery. Originally a legacy project, this version has been completely refactored from the ground up using **React.js** and **Tailwind CSS** to ensure a mobile-first, blazing-fast user experience.
