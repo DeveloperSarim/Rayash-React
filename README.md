@@ -85,7 +85,7 @@ src/
 **Sarim Yaseen**
 Chief Technology Officer & Full-Stack Developer
 
-* 🌐 Live Site: [https://rayash.netlify.app/](https://rayash.netlify.app/)
+* 🌐 Live Site: [https://sarimyaseen.com/](https://sarimyaseen.com/)
 * 💻 GitHub: [https://github.com/DeveloperSarim](https://github.com/DeveloperSarim)
 * 🏢 Company: [https://aixsolutions.net](https://aixsolutions.net)
 
